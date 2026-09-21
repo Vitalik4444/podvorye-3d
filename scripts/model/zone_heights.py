@@ -46,7 +46,9 @@ res = {}
 def walk(i, pm, lab):
     n = nodes[i]
     nm = n.get('name', '')
-    if 'LED' in nm:            # короба висят под потолком, метке они не нужны
+    # LED-короба висят под потолком, ёлка на сцене — 5 м от настила.
+    # Метку зоны такие объекты уводят вверх, поэтому их пропускаем.
+    if 'LED' in nm or nm.startswith('Tree_') or '/Tree_' in nm:
         return
     m = pm @ mat(n)
     if nm.startswith('Island_'):

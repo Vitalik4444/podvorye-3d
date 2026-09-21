@@ -20,10 +20,17 @@ raw = json.load(open(raw_path, encoding='utf-8'))
 # Геометрия зон берётся из Market_Model_Data.json редакции 26 — это выдача
 # проектировщика, а не перенабор таблицы руками. Формат строки:
 # [номер, название, X, Y, ширина, глубина, вид]
-MODEL_DATA = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                  '..', '..', 'build', 'r26', 'Market_3D_Final',
-                                  'Market_Model_Data.json'), encoding='utf-8')
-_md = json.load(MODEL_DATA)
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
+_builds = sorted(
+    (int(d[1:]), d) for d in os.listdir(os.path.join(ROOT, 'build'))
+    if d.startswith('r') and d[1:].isdigit()
+    and os.path.exists(os.path.join(ROOT, 'build', d, 'Market_3D_Final', 'Market_Model_Data.json'))
+)
+if not _builds:
+    raise SystemExit('не найдена распакованная выдача в build/rNN/Market_3D_Final')
+_latest = _builds[-1][1]          # берём самую свежую редакцию
+_md = json.load(io.open(os.path.join(ROOT, 'build', _latest, 'Market_3D_Final',
+                                     'Market_Model_Data.json'), encoding='utf-8'))
 GEOM = {int(r[0]): (float(r[2]), float(r[3]), float(r[4]), float(r[5])) for r in _md['islands']}
 print('геометрия зон из Market_Model_Data.json, редакция', _md['revision'], '- зон:', len(GEOM))
 
