@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build && node scripts/seo.mjs && node scripts/relativize.mjs",
     "preview": "vite preview --port 4173",
-    "seo": "node scripts/seo.mjs"
+    "seo": "node scripts/seo.mjs",
+    "publish": "node scripts/publish-pages.mjs"
   },
   "dependencies": {
     "@fontsource/golos-text": "^5.3.0",
