@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Холмогорское подворье — фермерский рынок</title>
+<meta name="description" content="«Холмогорское подворье» — гастрономический кластер в Калининградской области. Настоящие фермерские продукты, интерактивная 3D-карта рынка, знакомство с фермерами, события и дегустации. Сделано с любовью — проверено временем." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌾%3C/text%3E%3C/svg%3E" />
+  <script type="module" crossorigin src="./assets/main-DSdeoHPV.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/data-CrZn-biY.js">
+  <link rel="modulepreload" crossorigin href="./assets/preload-helper-C1FmrZbK.js">
+  <link rel="stylesheet" crossorigin href="./assets/data-DC2IB6Qn.css">
+<link rel="canonical" href="https://vitalik4444.github.io/podvorye-3d/site/index.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Холмогорское подворье">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Холмогорское подворье — фермерский рынок">
+<meta property="og:description" content="«Холмогорское подворье» — гастрономический кластер в Калининградской области. Настоящие фермерские продукты, интерактивная 3D-карта рынка, знакомство с фермерами, события и дегустации. Сделано с любовью — проверено временем.">
+<meta property="og:url" content="https://vitalik4444.github.io/podvorye-3d/site/index.html">
+<meta property="og:image" content="https://vitalik4444.github.io/podvorye-3d/site/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Фермерский рынок «Холмогорское подворье»">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Холмогорское подворье — фермерский рынок">
+<meta name="twitter:image" content="https://vitalik4444.github.io/podvorye-3d/site/og.jpg">
+<meta name="theme-color" content="#c87b3b">
+<meta name="hp-audio" content="0">
+<link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
+<link rel="dns-prefetch" href="https://api.open-meteo.com">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"LocalBusiness","@id":"https://vitalik4444.github.io/podvorye-3d/site/#business","name":"Холмогорское подворье","description":"Фермерский рынок в Калининградской области: хозяйства, продающие то, что производят сами.","url":"https://vitalik4444.github.io/podvorye-3d/site","image":"https://vitalik4444.github.io/podvorye-3d/site/og.jpg","priceRange":"₽₽","address":{"@type":"PostalAddress","addressCountry":"RU","addressRegion":"Калининградская область","addressLocality":"Холмогоровка"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"10:00","closes":"20:00"}],"telephone":"+7 (4012) 00-00-00"},{"@type":"WebSite","@id":"https://vitalik4444.github.io/podvorye-3d/site/#site","url":"https://vitalik4444.github.io/podvorye-3d/site","name":"Холмогорское подворье","inLanguage":"ru-RU","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://vitalik4444.github.io/podvorye-3d/site/search.html?q={q}"},"query-input":"required name=q"}}]}</script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr" id="hdr">
+  <a href="#top" class="brand" data-logo aria-label="Холмогорское подворье"></a>
+  <nav class="nav" id="nav">
+    <a href="catalog.html">Каталог</a>
+    <a href="recipes.html">Рецепты</a>
+    <a href="farmers.html">Фермеры</a>
+    <a href="events.html">События</a>
+    <a href="blog.html">Блог</a>
+    <a href="map.html">Карта</a>
+    <a href="cart.html" class="nav-cart" aria-label="Корзина">🛒<span id="cartBadge"></span></a>
+    <a href="partners.html" class="btn btn-primary">Стать арендатором</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+</header>
+
+<!-- HERO / 3D -->
+<section class="hero" id="top">
+  <canvas id="scene"></canvas>
+  <div class="hero-grad"></div>
+  <div id="hotspots"></div>
+
+  <div id="loader">
+    <svg class="l-mark" viewBox="0 0 48 48" fill="none">
+      <path d="M9 17.6c0-1.1 6.7-2.1 15-2.1s15 1 15 2.1-6.7 2.3-15 2.3-15-1.2-15-2.3Z" fill="#c87b3b"/>
+      <path d="M17.4 17.4C17.4 10.6 19.8 8.8 24 8.8s6.6 1.8 6.6 8.6" fill="#c87b3b"/>
+      <circle cx="24" cy="29.4" r="8.6" stroke="#f3ece0" stroke-width="3.3"/>
+      <path d="M24 38.2v7.2M24 40.6l-3.1-2M24 40.6l3.1-2M24 43.1l-3.1-2M24 43.1l3.1-2" stroke="#c87b3b" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+    <div class="bar"><i id="lbar"></i></div>
+    <small id="lpct">Загрузка подворья…</small>
+  </div>
+
+  <div class="hero-inner">
+    <div class="wrap">
+      <h1>Сделано с любовью — <em>проверено временем</em></h1>
+      <p>Настоящие фермерские продукты, живое общение и место, куда хочется возвращаться. Осмотрите подворье в 3D — как будто вы уже здесь.</p>
+      <div class="hero-cta">
+        <a href="#farmers" class="btn btn-primary">Познакомиться с фермерами</a>
+        <button class="btn btn-ghost" id="ctaTour">▶ Смотреть 3D-тур</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-tools">
+    <button id="btnTour" class="playing">⏸ Тур</button>
+    <button id="btnReset">⟲ Вид</button>
+    <button id="btnHot">◉ Фермеры</button>
+    <button id="btnInside">⤢ Внутрь рынка</button>
+  </div>
+  <div class="hero-hint"><span class="dot"></span> Зажмите и вращайте · колесо — приблизить</div>
+  <!-- Ф1: живая подпись о свете и погоде — сцена синхронна с реальным временем -->
+  <div class="sky-note" id="skyNote" hidden></div>
+  <button class="scroll-down" id="scrollDown" aria-label="Листать вниз">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13M6 12l6 6 6-6"/></svg>
+  </button>
+
+  <!-- Навигация по арендаторам -->
+  <div class="tenants" id="tenants">
+    <button class="tenants-toggle" id="tenantsToggle" aria-expanded="false">
+      <span class="tt-ico">◈</span><span>Арендаторы рынка</span><span class="chev">▾</span>
+    </button>
+    <ul class="tenants-list" id="tenantsList"></ul>
+  </div>
+
+  <!-- Interior walkthrough UI -->
+  <div class="interior-ui" id="interiorUI">
+    <button class="exit-int" id="btnExit">← Выйти наружу</button>
+    <div class="int-hint"><b>Прогулка внутри рынка</b><span>WASD / стрелки — идти · тяните мышью — осмотреться</span></div>
+    <div class="dpad">
+      <button data-move="f" aria-label="вперёд">▲</button>
+      <div class="dpad-mid">
+        <button data-move="l" aria-label="влево">◀</button>
+        <button data-move="b" aria-label="назад">▼</button>
+        <button data-move="r" aria-label="вправо">▶</button>
+      </div>
+    </div>
+  </div>
+  <div class="int-loader" id="intLoader"><div class="spin"></div><span>Заходим внутрь…</span></div>
+</section>
+
+<!-- BAND -->
+<div class="band">
+  <div class="wrap"><span class="band-dot"></span><b>Кликните по цветным точкам на модели</b> — познакомьтесь с теми, кто стоит за каждым прилавком, или зайдите внутрь рынка.</div>
+</div>
+
+<!-- STATS -->
+<section class="section" style="padding:64px 0" id="market">
+  <div class="wrap">
+    <div class="hstats reveal">
+      <div class="hstat"><b>5</b><span>категорий<br>фермерских продуктов</span></div>
+      <div class="hstat"><b>0</b><span>посредников<br>в цепочке</span></div>
+      <div class="hstat"><b>8–20</b><span>часы работы<br>ежедневно</span></div>
+      <div class="hstat"><b>365</b><span>дней в году<br>открыты для вас</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section values">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">Во что мы верим</span>
+      <h2>Мы не кричим о качестве —<br>мы его показываем</h2>
+      <p class="lead">«Холмогорское подворье» — это не торговая площадка, а место встречи. Здесь фермер знает своего покупателя в лицо, а каждая покупка — вклад в поддержку местного хозяйства.</p>
+    </div>
+    <div class="grid" id="valuesGrid"></div>
+  </div>
+</section>
+
+<!-- CATALOG PREVIEW -->
+<section class="section" style="background:var(--paper,#faf6ef)">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">Прямо от хозяйств</span>
+      <h2>Свежее с подворья</h2>
+      <p class="lead">Молочное, рыба, мясо, зелень, мёд и хлеб — без посредников. Соберите заказ и заберите на рынке или закажите доставку.</p>
+    </div>
+    <div class="catnav reveal" id="catNav" style="margin-top:26px"></div>
+    <div class="pgrid reveal" id="hitsGrid" style="margin-top:10px"></div>
+    <div style="text-align:center;margin-top:34px"><a class="btn btn-primary" href="catalog.html">Весь каталог →</a></div>
+  </div>
+</section>
+
+<!-- FARMERS -->
+<section class="section farmers" id="farmers">
+  <div class="wrap">
+    <div class="orn-row reveal"><svg class="orn" width="118" height="24" viewBox="0 0 118 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M59 3l9 9-9 9-9-9z"/><path d="M54.5 7.5l9 9M63.5 7.5l-9 9"/><path d="M50 12H39V5M39 12H29v7"/><path d="M68 12h11V5M79 12h10v7"/></svg></div>
+    <div class="shead reveal">
+      <span class="eyebrow">Сердце подворья</span>
+      <h2>Хозяйства, которым можно верить</h2>
+      <p class="lead">Не сухие факты, а лица и истории. Цвет точки на модели — это категория продукта. Кликните карточку, чтобы найти хозяйство на модели, или откройте его страницу.</p>
+    </div>
+    <div class="grid" id="farmersGrid"></div>
+    <div style="text-align:center;margin-top:34px"><a class="btn btn-line" href="farmers.html">Все хозяйства →</a></div>
+  </div>
+</section>
+
+<!-- RECIPES -->
+<section class="section" style="background:var(--cream)">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">Готовим вместе</span>
+      <h2>Рецепты из фермерского</h2>
+      <p class="lead">Понравился рецепт — добавьте все ингредиенты в корзину одним кликом и заберите готовый набор на рынке.</p>
+    </div>
+    <div class="grid3 reveal" id="recipesGrid" style="margin-top:38px"></div>
+    <div style="text-align:center;margin-top:34px"><a class="btn btn-primary" href="recipes.html">Все рецепты →</a></div>
+  </div>
+</section>
+
+<!-- GUESTS -->
+<section class="section guests" id="guests">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">Чем заняться у нас</span>
+      <h2>Возможности для гостей</h2>
+      <p class="lead">На подворье приходят не только за покупками — попробовать, узнать новое и пообщаться с теми, кто вырастил ваш обед.</p>
+    </div>
+    <div class="grid" id="guestsGrid"></div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="section events" id="events">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">Афиша</span>
+      <h2>Ближайшие события</h2>
+      <p class="lead">Ярмарки, мастер-классы и сезонные праздники. Приходите семьёй по выходным.</p>
+    </div>
+    <div class="grid" id="eventsGrid"></div>
+    <div style="text-align:center;margin-top:34px"><a class="btn btn-line" href="events.html">Вся афиша →</a></div>
+  </div>
+</section>
+
+<!-- MAP TEASER -->
+<section class="section" style="background:var(--cream)">
+  <div class="wrap"><div class="band-cta reveal">
+    <div><h2 style="margin:0 0 10px">Найдите нужный прилавок заранее</h2>
+      <p style="margin:0;opacity:.92;max-width:46ch">2D-план зала с расположением арендаторов и объёмная 3D-модель — осмотрите рынок ещё до визита.</p></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn-primary" href="map.html">План зала (2D)</a>
+      <a class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.55)" href="#top">К 3D-модели</a></div>
+  </div></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="wrap">
+    <div class="shead reveal">
+      <span class="eyebrow">Отзывы гостей</span>
+      <h2>За чем к нам возвращаются</h2>
+    </div>
+    <div class="testi reveal" id="testiGrid" style="margin-top:38px"></div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="section loc" id="location">
+  <div class="wrap">
+    <div class="row">
+      <div class="reveal">
+        <span class="eyebrow" style="color:var(--brown)">Мы здесь</span>
+        <h2>Приезжайте на подворье</h2>
+        <p class="lead">Большой крытый рынок в двух шагах от города. Парковка, дегустации и живой фермерский дух под одной крышей.</p>
+        <div class="facts">
+          <div class="fact"><span class="fi">◆</span><div><b>Калининградская область</b><span>пос. Холмогоровка, Рыночная площадь, 1 (демо-адрес)</span></div></div>
+          <div class="fact"><span class="fi">◷</span><div><b>Ежедневно 8:00 — 20:00</b><span>Ярмарки выходного дня — до 21:00</span></div></div>
+          <div class="fact"><span class="fi">✆</span><div><b>+7 (4012) 00-00-00</b><span>info@holmogorskoe-podvorye.ru</span></div></div>
+        </div>
+      </div>
+      <div class="map reveal" id="mapCard">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="400" height="300" fill="#ece1d5"/>
+          <path d="M0 120 L400 90" stroke="#ddd0ba" stroke-width="14"/>
+          <path d="M0 210 L400 240" stroke="#ddd0ba" stroke-width="10"/>
+          <path d="M150 0 L120 300" stroke="#ddd0ba" stroke-width="10"/>
+          <path d="M280 0 L300 300" stroke="#ddd0ba" stroke-width="8"/>
+          <rect x="168" y="108" width="90" height="66" rx="4" fill="#d8c8ac"/>
+          <path d="M0 60 Q120 30 400 55 L400 0 L0 0Z" fill="#e2ead4" opacity=".7"/>
+        </svg>
+        <div class="pin">
+          <svg width="42" height="52" viewBox="0 0 42 52"><path d="M21 0C9.4 0 0 9.4 0 21c0 15 21 31 21 31s21-16 21-31C42 9.4 32.6 0 21 0Z" fill="#c87b3b"/><circle cx="21" cy="20" r="8" fill="#fff"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- B2B -->
+<section class="section b2b" id="b2b">
+  <div class="wrap">
+    <div class="row">
+      <div class="reveal">
+        <span class="eyebrow">Сотрудничество</span>
+        <h2>Станьте частью подворья</h2>
+        <p class="lead">Мы ищем хозяйства, которые делают продукт, за который не стыдно. Дадим место, поток гостей и поддержку.</p>
+        <ul>
+          <li><span class="ok">✓</span> Готовое торговое место с инфраструктурой и оборудованием</li>
+          <li><span class="ok">✓</span> Независимый контроль качества: лаборатория и прослеживаемость партий</li>
+          <li><span class="ok">✓</span> Поток лояльных гостей, которым важно происхождение продукта</li>
+          <li><span class="ok">✓</span> Карточка хозяйства на сайте и на интерактивной 3D-карте рынка</li>
+        </ul>
+      </div>
+      <form class="form reveal" data-form="Заявка арендатора">
+        <h3>Заявка на размещение</h3>
+        <p class="sub">Оставьте контакты — расскажем об условиях и свободных местах.</p>
+        <div class="field"><label>Хозяйство / имя</label><input required placeholder="Например, Пасека Ковалёвых" /></div>
+        <div class="field"><label>Что продаёте</label>
+          <select><option>Молочное</option><option>Мясо и птица</option><option>Рыба</option><option>Овощи, зелень, ягода</option><option>Мёд и продукты пчеловодства</option><option>Выпечка и бакалея</option><option>Другое</option></select></div>
+        <div class="field"><label>Телефон</label><input required type="tel" placeholder="+7 (___) ___-__-__" /></div>
+        <button class="btn btn-primary" type="submit">Отправить заявку</button>
+        <p class="note">Это прототип — форма пока не отправляет данные.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="wrap">
+    <div class="row">
+      <div class="reveal">
+        <span class="eyebrow">Обратная связь</span>
+        <h2>Остались вопросы?<br>Напишите нам</h2>
+        <p class="lead">Мы на связи по-простому — как добрый сосед через забор. Ответим без формальностей.</p>
+      </div>
+      <form class="form reveal" data-form="Обращение гостя">
+        <div class="field"><label>Как вас зовут</label><input required placeholder="Имя" /></div>
+        <div class="field"><label>E-mail или телефон</label><input required placeholder="Как с вами связаться" /></div>
+        <div class="field"><label>Сообщение</label><textarea placeholder="Ваш вопрос или пожелание"></textarea></div>
+        <button class="btn btn-primary" type="submit">Отправить</button>
+        <p class="note">Это прототип — форма пока не отправляет данные.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <a href="#top" class="brand" data-logo aria-label="Холмогорское подворье"></a>
+        <p style="margin-top:20px;max-width:36ch;color:#a99f92">Настоящие фермерские продукты из Калининградской области. Сделано с любовью — проверено временем.</p>
+      </div>
+      <div><p class="foot-ttl">Подворье</p><a href="about.html">О нас</a><a href="farmers.html">Фермеры</a><a href="events.html">События</a><a href="blog.html">Блог</a><a href="guests.html">Гостям</a></div>
+      <div><p class="foot-ttl">Покупателям</p><a href="catalog.html">Каталог</a><a href="recipes.html">Рецепты</a><a href="map.html">Карта рынка</a><a href="delivery.html">Доставка и оплата</a><a href="partners.html">Стать арендатором</a></div>
+      <div><p class="foot-ttl">Контакты</p><a href="contacts.html">Как нас найти</a><a href="tel:+74012000000">+7 (4012) 00-00-00</a><a href="mailto:info@holmogorskoe-podvorye.ru">info@holmogorskoe-podvorye.ru</a><a href="privacy.html">Политика конфиденциальности</a></div>
+    </div>
+    <div class="bottom">
+      <span>© 2026 «Холмогорское подворье». Прототип сайта.</span>
+      <span>3D-модель рынка · интерактивный прототип</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Farmer panel -->
+<div class="overlay" id="overlay"></div>
+<aside id="panel" aria-hidden="true">
+  <div class="p-hero" id="pHero">
+    <button class="p-close" id="pClose" aria-label="Закрыть">✕</button>
+    <div class="mono" id="pMono"></div>
+    <div><div class="p-spec" id="pSpec"></div><div class="p-name" id="pName"></div></div>
+  </div>
+  <div class="p-body">
+    <p class="p-tag" id="pTag"></p>
+    <p id="pStory"></p>
+    <div class="p-meta" id="pMeta"></div>
+    <div class="p-products" id="pProducts"></div>
+    <button class="btn btn-primary" id="pCatalog" style="width:100%;justify-content:center">Перейти в каталог →</button>
+  </div>
+</aside>
+
+<!-- Fade overlay for entrance→interior transition -->
+<div id="fade"></div>
+
+<!-- Toast -->
+<div id="toast">✓ <span id="toastMsg">Готово</span></div>
+
+</body>
+</html>
