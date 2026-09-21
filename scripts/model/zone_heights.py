@@ -48,13 +48,15 @@ def walk(i, pm, lab):
     nm = n.get('name', '')
     # LED-короба висят под потолком, ёлка на сцене — 5 м от настила.
     # Метку зоны такие объекты уводят вверх, поэтому их пропускаем.
-    if 'LED' in nm or 'Tree_' in nm:
+    low = nm.lower()
+    if 'led' in low or 'tree_' in low:
         return
     m = pm @ mat(n)
-    # Island_12 (ред. 26-27) и R29_Island_MEAT (ред. 29)
+    # Island_12 (ред. 26-27), R29_Island_MEAT (ред. 29),
+    # Island_20__red__000 (ред. 30 — узлы слиты по материалам)
     g = re.match(r'(?:R\d+_)?Island_(.+)$', nm)
     if g:
-        lab = g.group(1)
+        lab = g.group(1).split('__')[0]
     if 'mesh' in n and lab:
         for p in meshes[n['mesh']]['primitives']:
             a = acc[p['attributes']['POSITION']]

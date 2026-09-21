@@ -130,7 +130,7 @@ for key, label, kind, badge, note in PAVILIONS:
                      area=round((maxx - minx) * (maxz - minz), 1),
                      top=min(g['top'], 3.0),
                      w=round((maxx - minx) * 1000), d=round((maxz - minz) * 1000),
-                     sheet='Выдача R29', note=note, badge=badge,
+                     sheet='Вне альбома, по модели', note=note, badge=badge,
                      c=[round((minx + maxx) / 2, 3), round(min(g['top'], 3.0), 3),
                         round((minz + maxz) / 2, 3)],
                      minp=[minx, minz], maxp=[maxx, maxz]))
