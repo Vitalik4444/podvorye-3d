@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог продуктов — Холмогорское подворье</title>
+<meta name="description" content="Всё, что сегодня на прилавках подворья: молочное, мясо, балтийская рыба, овощи, хлеб и мёд. С фильтрами по хозяйствам и категориям.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E&#127806;%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="catalog">
+<main class="page">
+
+  <section class="paper grain">
+    <div class="wrap">
+      <div class="ed-index-head">
+        <div>
+          <div class="crumbs"><a href="/index.html">Главная</a><span>›</span><span>Каталог</span></div>
+          <h1>Что сегодня<br>на прилавках</h1>
+          <p class="lead">Цены и наличие меняются каждый день — это нормально для живого продукта. Фильтруйте по категории или конкретному хозяйству.</p>
+        </div>
+        <div class="side">
+          <div class="catnav" id="catNav"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect" style="padding-top:26px">
+    <div class="wrap">
+      <div class="catalog">
+        <aside class="filters">
+          <div class="fgroup"><p class="fld-ttl">Сортировка</p>
+            <select id="sortSel" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:var(--cream-2)">
+              <option value="">По умолчанию</option><option value="cheap">Сначала дешевле</option><option value="exp">Сначала дороже</option></select></div>
+          <div class="fgroup"><p class="fld-ttl">Категория</p><div id="fCats"></div></div>
+          <div class="fgroup"><p class="fld-ttl">Хозяйство</p><div id="fFarms"></div></div>
+        </aside>
+        <div>
+          <h2 class="vh">Товары каталога</h2>
+          <div class="pcount" id="pcount"></div>
+          <div class="pgrid" id="pgrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Витринная полоса: разрыв монотонности сетки (§5.2, «шов» другого регистра) -->
+  <section class="ed-spot" id="edSpot"></section>
+
+  <section class="sect">
+    <div class="wrap">
+      <div class="ed-head-in" style="align-items:center">
+        <div>
+          <p class="eyebrow">Не хочется выбирать</p>
+          <h2 class="sect-t">Возьмите готовый бокс</h2>
+          <p class="lead" style="color:var(--muted);margin-top:12px">Собранные наборы на завтрак, ужин и неделю. Или соберите свой ящик — цена посчитается сразу.</p>
+        </div>
+        <div class="ed-head-num" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
+          <a class="btn btn-primary" href="/boxes.html">Боксы</a>
+          <a class="btn btn-ghost" href="/builder.html">Свой ящик</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/catalogSpot.js"></script>
+</body></html>

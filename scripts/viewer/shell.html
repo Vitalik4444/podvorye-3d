@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Холмогорское подворье — 3D-модель рынка</title>
+<style>
+  :root{
+    --ink:#1d1d1b; --brown:#c87b3b; --cream:#ece1d5; --paper:#f7f2ea;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--cream);
+    font:14px/1.45 "Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); -webkit-font-smoothing:antialiased}
+  #stage{position:fixed;inset:0}
+  canvas{display:block}
+
+  header{position:fixed;left:0;right:0;top:0;z-index:5;display:flex;align-items:center;
+    gap:14px;padding:calc(12px + env(safe-area-inset-top,0px)) 20px 12px;
+    background:linear-gradient(180deg,rgba(29,29,27,.55),rgba(29,29,27,0));color:#fff;
+    pointer-events:none}
+  .mark{width:26px;height:26px;border-radius:50%;background:var(--brown);flex:none}
+  .ttl{font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:13px;line-height:1.15}
+  .ttl span{display:block;font-weight:600;letter-spacing:.14em;font-size:9px;opacity:.8}
+  .rev{margin-left:auto;font-size:11px;letter-spacing:.06em;opacity:.85;text-align:right}
+
+  #modes{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:6;display:none;gap:8px}
+  #modes button{border:0;cursor:pointer;font:inherit;font-weight:700;font-size:13px;
+    padding:11px 20px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);
+    box-shadow:0 6px 22px rgba(29,29,27,.28)}
+  #modes button.on{background:var(--brown);color:#fff}
+
+  #hint{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:6;display:none;
+    font-size:12px;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.65);white-space:nowrap}
+
+  #pad{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));
+    bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:6;
+    display:none;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:6px}
+  #pad button{border:0;cursor:pointer;font-size:17px;border-radius:12px;
+    background:rgba(255,255,255,.88);color:var(--ink);box-shadow:0 4px 14px rgba(29,29,27,.24)}
+  #pad .up{grid-column:2}
+  #pad .lf{grid-column:1;grid-row:2}
+  #pad .dn{grid-column:2;grid-row:2}
+  #pad .rt{grid-column:3;grid-row:2}
+
+  #note{position:fixed;inset:0;z-index:8;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:16px;background:var(--paper);text-align:center;padding:24px}
+  #note h1{margin:0;font-size:clamp(20px,4vw,30px);font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+  #note p{margin:0;max-width:420px;opacity:.7}
+  #track{width:min(320px,70vw);height:4px;border-radius:2px;background:rgba(29,29,27,.14);overflow:hidden}
+  #bar{height:100%;width:8%;background:var(--brown);transition:width .45s ease}
+
+  /* метки зон */
+  #spots{position:fixed;inset:0;z-index:4;pointer-events:none}
+  .hs{position:absolute;transform:translate(-50%,-50%);border:0;background:none;padding:0;
+    cursor:pointer;pointer-events:auto;display:flex;align-items:center;gap:7px;
+    font:inherit;white-space:nowrap;transition:opacity .18s}
+  .hs .dot{width:15px;height:15px;border-radius:50%;flex:none;border:2.5px solid #fff;
+    box-shadow:0 2px 9px rgba(29,29,27,.5);transition:transform .18s}
+  .hs .lab{font-size:12px;font-weight:700;color:#fff;text-shadow:0 1px 7px rgba(0,0,0,.85);
+    opacity:0;transition:opacity .18s}
+  .hs:hover .lab,.hs.near .lab{opacity:1}
+  .hs:hover .dot{transform:scale(1.28)}
+
+  /* карточка зоны */
+  #card{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);z-index:9;
+    background:var(--paper);box-shadow:-14px 0 44px rgba(29,29,27,.28);
+    transform:translateX(102%);transition:transform .36s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;overflow:auto}
+  #card.open{transform:none}
+  #chero{padding:calc(24px + env(safe-area-inset-top,0px)) 26px 22px;color:#fff;position:relative}
+  #cnum{position:absolute;right:20px;top:14px;font-size:76px;font-weight:800;opacity:.3;line-height:1}
+  #ckind{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+  #cname{margin:5px 0 0;font-size:23px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;line-height:1.14}
+  #cbody{padding:20px 26px calc(26px + env(safe-area-inset-bottom,0px))}
+  #cdim{font-weight:700;color:var(--brown);margin:0 0 12px;font-size:15px}
+  #cnote{margin:0;line-height:1.6}
+  #cchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+  #cchips span{background:rgba(29,29,27,.08);border-radius:999px;padding:6px 13px;font-size:11.5px}
+  #cclose{position:absolute;right:16px;bottom:-18px;width:38px;height:38px;border-radius:50%;
+    border:0;cursor:pointer;background:#fff;color:var(--ink);font-size:19px;line-height:1;
+    box-shadow:0 5px 18px rgba(29,29,27,.3)}
+
+  @media (max-width:560px){ .rev{display:none} #hint{font-size:11px;white-space:normal;
+    width:80vw;text-align:center} .hs .lab{display:none} }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="spots"></div>
+
+<div id="card">
+  <div id="chero">
+    <div id="cnum"></div>
+    <div id="ckind">Зона рынка</div>
+    <h2 id="cname"></h2>
+    <button id="cclose" aria-label="Закрыть">×</button>
+  </div>
+  <div id="cbody">
+    <p id="cdim"></p>
+    <p id="cnote"></p>
+    <div id="cchips"></div>
+  </div>
+</div>
+
+<header>
+  <div class="mark"></div>
+  <div class="ttl">Холмогорское подворье<span>фермерский рынок</span></div>
+  <div class="rev">3D-модель рынка<br>редакция 26 · 21.09.2026</div>
+</header>
+
+<div id="hint"></div>
+
+<div id="pad">
+  <button class="up" data-dir="f">▲</button>
+  <button class="lf" data-dir="l">◀</button>
+  <button class="dn" data-dir="b">▼</button>
+  <button class="rt" data-dir="r">▶</button>
+</div>
+
+<div id="modes">
+  <button data-mode="orbit" class="on">Осмотр снаружи</button>
+  <button data-mode="walk">Прогулка внутри</button>
+</div>
+
+<div id="note">
+  <h1>Холмогорское подворье</h1>
+  <p>Загружается 3D-модель рынка. Первый запуск занимает несколько секунд — модель распаковывается прямо в браузере.</p>
+  <div id="track"><div id="bar"></div></div>
+</div>
+
+<!--DATA-->
+<!--LIBS-->
+<!--APP-->
+</body>
+</html>

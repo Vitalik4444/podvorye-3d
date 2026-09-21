@@ -1,0 +1,20 @@
+{
+  "name": "holmogorskoe-podvorye",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/seo.mjs && node scripts/relativize.mjs",
+    "preview": "vite preview --port 4173",
+    "seo": "node scripts/seo.mjs"
+  },
+  "dependencies": {
+    "@fontsource/golos-text": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "three": "^0.160.0",
+    "three-mesh-bvh": "^0.7.8",
+    "vite": "^5.4.21"
+  }
+}

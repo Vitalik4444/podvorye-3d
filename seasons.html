@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Календарь сезонов — Холмогорское подворье</title>
+<meta name="description" content="Колесо из двенадцати месяцев: что созревает, что коптят и что заканчивается на фермерском рынке в Калининградской области.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌾%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="seasons">
+<main class="page">
+  <section class="phero paper grain">
+    <div class="wrap">
+      <div class="crumbs"><a href="/index.html">Главная</a><span>›</span><span>Сезоны</span></div>
+      <h1>Календарь сезонов</h1>
+      <p class="lead" style="max-width:56ch">У настоящей еды есть своё время. Поверните колесо — увидите, что созревает, что коптят и что вот-вот закончится.</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap">
+      <div class="wheel-wrap">
+        <div class="wheel-col">
+          <div class="wheel" id="wheel" role="group" aria-label="Колесо месяцев">
+            <div class="wheel-ring" id="ring"></div>
+            <div class="wheel-hub">
+              <div>
+                <b id="hubMonth">июль</b>
+                <span id="hubCount"></span>
+              </div>
+            </div>
+          </div>
+          <div class="wheel-nav">
+            <button id="prevM" aria-label="Предыдущий месяц">←</button>
+            <button id="nextM" aria-label="Следующий месяц">→</button>
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">Сейчас в сезоне</p>
+          <h2 class="sect-t" style="margin-bottom:18px">Что взять в этом месяце</h2>
+          <div class="season-list" id="seasonList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect paper">
+    <div class="wrap">
+      <div class="grid2">
+        <div class="rv">
+          <p class="eyebrow">Успеть</p>
+          <h3 style="text-transform:none;font-size:22px;margin-bottom:12px">Заканчивается в этом месяце</h3>
+          <div class="box-items" id="ending"></div>
+        </div>
+        <div class="rv">
+          <p class="eyebrow">Ждём</p>
+          <h3 style="text-transform:none;font-size:22px;margin-bottom:12px">Появится в <span id="nextMonth"></span></h3>
+          <div class="box-items" id="coming"></div>
+        </div>
+      </div>
+      <div class="band-cta" style="margin-top:34px">
+        <div class="wrap" style="padding:0">
+          <p class="lead" style="margin-bottom:14px">Хотите, сообщим, когда пойдёт клубника или новый мёд?</p>
+          <a class="btn btn-primary" href="/contacts.html">Сообщить о сезоне</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/seasons.js"></script>
+</body></html>

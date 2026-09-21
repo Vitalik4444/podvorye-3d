@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Поиск по подворью</title>
+<meta name="description" content="Поиск по товарам, хозяйствам, рецептам, материалам журнала, событиям и страницам фермерского рынка.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E&#127806;%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="search">
+<main class="page">
+  <section class="phero paper grain">
+    <div class="wrap">
+      <div class="crumbs"><a href="/index.html">Главная</a><span>&#8250;</span><span>Поиск</span></div>
+      <h1>Поиск</h1>
+      <form class="srch-field" id="srchForm" style="margin-top:22px;max-width:620px" role="search">
+        <input id="srchInput" type="search" placeholder="Товар, хозяйство, рецепт, событие…" autocomplete="off" aria-label="Поисковый запрос">
+        <button class="btn btn-primary" type="submit">Найти</button>
+      </form>
+      <p style="color:var(--muted);font-size:13.5px;margin-top:12px" id="srchCount"></p>
+    </div>
+  </section>
+  <section class="sect"><div class="wrap"><h2 class="vh">Результаты поиска</h2><div class="srch-groups" id="srchOut"></div></div></section>
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/pages3.js"></script>
+</body></html>

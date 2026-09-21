@@ -1,0 +1,116 @@
+/* ===== Волна 2: ряды, паспорт партии, аренда, лояльность, фудкорт ===== */
+
+/* ---------- Ряд рынка (zone.html) ---------- */
+.zone-hero{ background:var(--cat-tint); padding:44px 0 52px; position:relative; overflow:hidden }
+.zone-hero .letter{ position:absolute; right:4%; top:-8%; font:900 clamp(180px,26vw,420px)/1 var(--font);
+  color:var(--cat); opacity:.14; pointer-events:none; letter-spacing:-.05em }
+.zone-hero h1{ font-size:var(--t-display-l); text-transform:uppercase; letter-spacing:-.03em; line-height:.92; margin:0 }
+.zone-hero .lead{ max-width:44ch; margin-top:16px }
+.zone-meta{ display:flex; gap:22px; flex-wrap:wrap; margin-top:22px; font-size:14px; color:var(--muted) }
+.zone-meta b{ color:var(--ink) }
+.manifesto p{ font-size:var(--t-body-l); line-height:1.7; max-width:56ch }
+.manifesto p + p{ margin-top:1em }
+.guide{ display:grid; gap:14px; counter-reset:g }
+.guide li{ list-style:none; display:grid; grid-template-columns:34px 1fr; gap:14px; align-items:baseline;
+  background:#fff; border-radius:var(--r-m); padding:16px 18px; box-shadow:var(--sh-1) }
+.guide li::before{ counter-increment:g; content:counter(g); font:900 18px/1 var(--font); color:var(--cat) }
+
+/* ---------- Паспорт партии (passport.html) ---------- */
+.pp-head{ background:var(--ink); color:#f4efe6; padding:46px 0 50px; position:relative }
+.pp-code{ font:800 12.5px/1 var(--font); letter-spacing:.22em; text-transform:uppercase; color:var(--brown) }
+.pp-head h1{ font-size:clamp(30px,4.6vw,58px); text-transform:uppercase; letter-spacing:-.025em; margin:12px 0 0 }
+.pp-head .when{ margin-top:14px; font-size:var(--t-body-l); color:rgba(244,239,230,.82); font-variant-numeric:tabular-nums }
+.pp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px }
+.pp-card{ background:#fff; border-radius:var(--r-l); padding:24px; box-shadow:var(--sh-1) }
+.pp-card h3{ font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 12px }
+.pp-card b.big{ font-size:32px; font-weight:900; font-variant-numeric:tabular-nums; display:block }
+.pp-path{ display:flex; align-items:center; gap:14px; margin-top:14px }
+.pp-path .dot{ width:12px; height:12px; border-radius:50%; background:var(--cat); flex:0 0 12px }
+.pp-path .line{ flex:1; height:2px; background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 12px) }
+.pp-checks li{ list-style:none; padding-left:26px; position:relative; margin-bottom:10px; color:var(--ink-soft,#403a33) }
+.pp-checks li::before{ content:'✓'; position:absolute; left:0; top:0; color:var(--c-veg); font-weight:900 }
+.pp-miss{ background:var(--cream); border-radius:var(--r-l); padding:30px; text-align:center }
+
+/* ---------- Аренда места (join.html) ---------- */
+.jn-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center }
+.jn-stats b{ display:block; font-size:var(--t-display-l); font-weight:900; line-height:1; color:var(--brown);
+  font-variant-numeric:tabular-nums }
+.jn-stats span{ display:block; margin-top:10px; font-size:13.5px; color:var(--muted) }
+.calc{ display:grid; grid-template-columns:1fr 340px; gap:32px; align-items:start }
+.calc-form .fgroup{ margin-bottom:22px }
+.calc-form h4{ font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 12px }
+.calc-opts{ display:grid; gap:10px }
+.calc-opt{ display:flex; align-items:baseline; gap:12px; background:#fff; border-radius:var(--r-m);
+  padding:14px 16px; box-shadow:var(--sh-1); cursor:pointer; border:2px solid transparent }
+.calc-opt.on{ border-color:var(--brown) }
+.calc-opt b{ font-size:15px }
+.calc-opt span{ font-size:12.5px; color:var(--muted); margin-left:auto; text-align:right }
+.calc-range{ width:100%; accent-color:var(--brown) }
+.calc-out{ position:sticky; top:88px; background:var(--ink); color:#f4efe6; border-radius:var(--r-l); padding:26px }
+.calc-out h3{ font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:#b9b3a6; margin:0 0 18px }
+.calc-row{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:10px 0;
+  border-bottom:1px dashed rgba(244,239,230,.18); font-variant-numeric:tabular-nums }
+.calc-row:last-of-type{ border-bottom:0 }
+.calc-row b{ font-size:20px; font-weight:800 }
+.calc-total b{ font-size:30px; font-weight:900; color:#fff }
+.calc-note{ font-size:12px; color:#9d9689; margin-top:14px; line-height:1.5 }
+
+/* План со свободными местами */
+.plan-free{ position:relative; background:var(--cream-2); border-radius:var(--r-l); padding:18px; overflow:auto }
+.plan-free svg{ width:100%; height:auto; display:block; min-width:640px }
+.plan-free .st{ cursor:pointer }
+.plan-free .st rect{ transition:.2s var(--e-soft) }
+.plan-free .st.free rect{ fill:#fff; stroke:var(--c-veg); stroke-width:2; stroke-dasharray:5 4 }
+.plan-free .st.free.on rect{ fill:var(--c-veg); }
+.plan-free .st.free.on text{ fill:#fff }
+.plan-free .st.busy rect{ fill:#efe7da; stroke:var(--line) }
+.plan-free text{ font:700 12px/1 var(--font); fill:var(--ink); pointer-events:none }
+.plan-legend{ display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--muted); margin-top:14px }
+.plan-legend i{ display:inline-block; width:14px; height:14px; border-radius:3px; margin-right:6px; vertical-align:-2px }
+
+/* ---------- Лояльность: карточка со штампами ---------- */
+.stamp-card{ background:#fffdf8; border-radius:var(--r-l); box-shadow:var(--sh-3); padding:28px;
+  max-width:520px; position:relative; overflow:hidden }
+.stamp-card::after{ content:''; position:absolute; inset:10px; border:1.5px dashed var(--line);
+  border-radius:calc(var(--r-l) - 6px); pointer-events:none }
+.stamp-card h3{ font-size:18px; text-transform:uppercase; letter-spacing:.02em; margin:0 0 4px }
+.stamp-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin:22px 0 18px }
+.stamp-cell{ aspect-ratio:1; border-radius:50%; border:1.5px dashed var(--line); display:grid; place-items:center;
+  color:var(--brown-d) }
+.stamp-cell.filled{ border-style:solid; border-color:var(--brown); background:rgba(200,123,59,.08);
+  animation:stampPop 420ms var(--e-back) }
+.stamp-cell svg{ width:74%; height:74% }
+@keyframes stampPop{ from{ transform:scale(.6) rotate(-12deg); opacity:0 } to{ transform:none; opacity:1 } }
+.stamp-rules li{ list-style:none; display:flex; gap:14px; align-items:baseline; padding:12px 0;
+  border-bottom:1px dashed var(--line) }
+.stamp-rules b{ font-variant-numeric:tabular-nums; min-width:2.5em; color:var(--brown) }
+.stamp-rules li.done{ color:var(--muted) }
+.stamp-rules li.done b{ color:var(--c-veg) }
+
+/* ---------- Фудкорт ---------- */
+.kitchens{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px }
+.kitchen{ background:#fff; border-radius:var(--r-l); box-shadow:var(--sh-1); overflow:hidden;
+  display:flex; flex-direction:column; transition:.25s var(--e-out) }
+.kitchen:hover{ transform:translateY(-5px); box-shadow:var(--sh-2), var(--sh-cat) }
+.kitchen .k-top{ background:var(--cat-tint); padding:18px 20px; border-bottom:3px solid var(--cat) }
+.kitchen h3{ font-size:19px; text-transform:uppercase; margin:0 }
+.kitchen .k-b{ padding:18px 20px 20px; display:flex; flex-direction:column; gap:8px; flex:1 }
+.kitchen .k-hit{ font-weight:700 }
+.kitchen .k-meta{ margin-top:auto; display:flex; justify-content:space-between; font-size:13px; color:var(--muted);
+  font-variant-numeric:tabular-nums }
+.seats{ display:flex; align-items:center; gap:14px; background:#fff; border-radius:var(--r-m);
+  padding:16px 20px; box-shadow:var(--sh-1) }
+.seats .bar{ flex:1; height:10px; border-radius:var(--r-full); background:var(--cream-2); overflow:hidden }
+.seats .bar i{ display:block; height:100%; background:var(--c-veg) }
+.seats b{ font-variant-numeric:tabular-nums }
+
+@media(max-width:900px){
+  .pp-grid, .calc{ grid-template-columns:1fr }
+  .calc-out{ position:static }
+  .jn-stats{ grid-template-columns:repeat(2,1fr); gap:24px 14px }
+  .stamp-grid{ grid-template-columns:repeat(4,1fr) }
+}
+
+/* Метки полей калькулятора: визуально те же, но не заголовки (иерархия §3.3 аудита) */
+.calc-form .fld-ttl{ font:800 13px/1 var(--font); letter-spacing:.08em; text-transform:uppercase;
+  margin:0 0 12px }

@@ -1,0 +1,149 @@
+/* ============================================================
+   Шапка v4. Что исправлено против прежней:
+   1. Эмодзи-иконки (🔍🛒👤) → SVG-иконки в одном штрихе.
+   2. Официальный лок-ап 2:1 сжимался в кашу на 58px → в шапке компактный
+      знак + начертание набором (полный лок-ап остаётся в футере).
+   3. Девять равновесных пунктов → пять разделов с подменю (IA §4.2).
+   4. B2B-кнопка была самым ярким элементом → уехала в тонкую служебную строку.
+   5. Появился вертикальный ритм: служебная строка 34px + основная 68px,
+      при скролле основная сжимается до 56px.
+   ============================================================ */
+
+/* ---------- Служебная строка ---------- */
+.hb{ background:var(--ink); color:rgba(244,239,230,.78); font-size:12.5px; line-height:1 }
+.hb-in{ max-width:var(--w-wide); margin:0 auto; padding:0 32px; height:34px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px }
+.hb a{ color:inherit; white-space:nowrap }
+.hb a:hover{ color:#fff }
+.hb-left{ display:flex; align-items:center; gap:10px }
+.hb-left .dot{ width:6px; height:6px; border-radius:50%; background:var(--c-veg); flex:0 0 6px }
+.hb-left .dot.off{ background:#8a8378 }
+.hb-right{ display:flex; align-items:center; gap:20px }
+.hb-sep{ opacity:.35 }
+@media(max-width:900px){ .hb-in{ padding:0 16px } .hb-right{ display:none } }
+
+/* ---------- Основная строка ---------- */
+.hd{ position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92);
+  backdrop-filter:blur(14px) saturate(1.2); border-bottom:1px solid var(--line);
+  transition:box-shadow .3s var(--e-soft) }
+.hd.stuck{ box-shadow:0 6px 24px -18px rgba(94,60,28,.5) }
+.hd-in{ max-width:var(--w-wide); margin:0 auto; padding:0 32px; height:68px;
+  display:flex; align-items:center; gap:34px; transition:height .28s var(--e-soft) }
+.hd.stuck .hd-in{ height:56px }
+
+/* Лок-ап: знак + начертание в две строки */
+.hd-brand{ display:flex; align-items:center; gap:11px; color:var(--ink); flex:0 0 auto }
+.hd-plate{ width:40px; height:40px; flex:0 0 40px; border-radius:12px; background:var(--brown);
+  display:grid; place-items:center; transition:width .28s, height .28s, flex-basis .28s }
+.hd.stuck .hd-plate{ width:34px; height:34px; flex-basis:34px }
+.hd-mark{ width:74%; height:74% }
+.hd-mark .cls-1{ fill:#fff }
+.hd.hero-mode .hd-plate{ background:rgba(255,255,255,.16); backdrop-filter:blur(4px) }
+.hd.hero-mode.stuck .hd-plate{ background:var(--brown) }
+.hd-word{ display:flex; flex-direction:column; line-height:1 }
+.hd-word b{ font:900 13px/1 var(--font); letter-spacing:.055em; text-transform:uppercase }
+.hd-word span{ font:600 9.5px/1 var(--font); letter-spacing:.19em; text-transform:uppercase;
+  color:var(--muted); margin-top:4px }
+@media(max-width:1080px){ .hd-word span{ display:none } }
+
+/* ---------- Меню с подменю ---------- */
+.hd-nav{ display:flex; align-items:center; gap:4px; margin-right:auto }
+.hd-item{ position:relative }
+.hd-link{ display:inline-flex; align-items:center; gap:6px; padding:10px 13px; border-radius:var(--r-s);
+  font:600 14.5px/1 var(--font); color:var(--ink); background:none; border:0; cursor:pointer;
+  white-space:nowrap; transition:background .18s var(--e-soft), color .18s var(--e-soft) }
+.hd-link:hover{ background:var(--cream) }
+.hd-item.active > .hd-link{ color:var(--brown) }
+.hd-item.active > .hd-link::after{ content:''; position:absolute; left:13px; right:13px; bottom:2px;
+  height:2px; background:var(--brown); border-radius:2px }
+.hd-link .chev{ width:8px; height:8px; border-right:1.6px solid currentColor; border-bottom:1.6px solid currentColor;
+  transform:rotate(45deg) translateY(-1px); opacity:.45; transition:transform .2s var(--e-soft) }
+.hd-item:hover .chev, .hd-item.open .chev{ transform:rotate(225deg) translateY(-3px); opacity:.8 }
+
+.hd-drop{ position:absolute; left:0; top:100%; min-width:250px; background:#fff; border-radius:var(--r-m);
+  box-shadow:var(--sh-3); padding:10px; opacity:0; visibility:hidden; transform:translateY(6px);
+  transition:opacity .2s var(--e-soft), transform .2s var(--e-soft), visibility .2s }
+.hd-item:hover .hd-drop, .hd-item.open .hd-drop{ opacity:1; visibility:visible; transform:none }
+.hd-drop a{ display:flex; flex-direction:column; gap:2px; padding:10px 12px; border-radius:var(--r-s);
+  color:var(--ink); transition:background .16s }
+.hd-drop a:hover{ background:var(--cream) }
+.hd-drop b{ font:700 14.5px/1.2 var(--font) }
+.hd-drop span{ font-size:12.5px; color:var(--muted); line-height:1.3 }
+
+/* ---------- Инструменты ---------- */
+.hd-tools{ display:flex; align-items:center; gap:6px; flex:0 0 auto }
+.hd-ico{ width:40px; height:40px; border-radius:var(--r-s); border:0; background:none; cursor:pointer;
+  display:grid; place-items:center; color:var(--ink); position:relative; transition:background .18s }
+.hd-ico:hover{ background:var(--cream) }
+.hd-ico svg{ width:20px; height:20px; stroke-width:1.7 }
+.hd-ico .badge{ position:absolute; top:4px; right:3px; min-width:17px; height:17px; padding:0 4px;
+  border-radius:9px; background:var(--brown); color:#fff; font:800 10.5px/17px var(--font);
+  text-align:center; display:none }
+.hd-ico .badge.on{ display:block }
+.hd-burger{ display:none }
+
+@media(max-width:1180px){
+  .hd-in{ gap:18px; padding:0 20px }
+  .hd-link{ padding:10px 9px; font-size:14px }
+}
+@media(max-width:980px){
+  .hd-nav{ display:none }
+  .hd-burger{ display:grid }
+}
+
+/* ---------- Мобильная панель ---------- */
+.hd-panel{ position:fixed; inset:0 0 0 auto; width:min(400px,88vw); background:#fff; z-index:70;
+  box-shadow:var(--sh-3); padding:24px 24px 40px; overflow-y:auto;
+  transform:translateX(100%); transition:transform .34s var(--e-inout) }
+.hd-panel.open{ transform:none }
+.hd-panel h4{ font:800 11.5px/1 var(--font); letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); margin:26px 0 10px }
+.hd-panel a{ display:block; padding:9px 0; font-size:16.5px; color:var(--ink); border-bottom:1px solid var(--line) }
+.hd-panel .close{ position:absolute; top:18px; right:18px; width:40px; height:40px; border:0; background:none;
+  cursor:pointer; color:var(--ink) }
+.hd-scrim{ position:fixed; inset:0; background:rgba(29,29,27,.42); z-index:69; opacity:0; visibility:hidden;
+  transition:opacity .3s, visibility .3s }
+.hd-scrim.open{ opacity:1; visibility:visible }
+
+/* Старую шапку скрываем — она заменена целиком */
+.sh{ display:none !important }
+
+/* ---------- Вариант над 3D-геро главной: прозрачная, светлая ---------- */
+.hd.hero-mode{ background:transparent; border-bottom-color:transparent; backdrop-filter:none }
+.hd.hero-mode .hd-word b{ color:#fff } .hd.hero-mode .hd-word span{ color:rgba(255,255,255,.7) }
+.hd.hero-mode .hd-link{ color:#fff }
+.hd.hero-mode .hd-link:hover{ background:rgba(255,255,255,.14) }
+.hd.hero-mode .hd-ico{ color:#fff }
+.hd.hero-mode .hd-ico:hover{ background:rgba(255,255,255,.14) }
+.hd.hero-mode .hd-mark .cls-1{ fill:#fff }
+.hd.hero-mode.stuck{ background:rgba(255,255,255,.94); border-bottom-color:var(--line); backdrop-filter:blur(14px) saturate(1.2) }
+.hd.hero-mode.stuck .hd-word b{ color:var(--ink) } .hd.hero-mode.stuck .hd-word span{ color:var(--muted) }
+.hd.hero-mode.stuck .hd-link, .hd.hero-mode.stuck .hd-ico{ color:var(--ink) }
+.hd.hero-mode.stuck .hd-mark .cls-1{ fill:var(--brown) }
+.hd.hero-mode.stuck .hd-link:hover, .hd.hero-mode.stuck .hd-ico:hover{ background:var(--cream) }
+
+/* Старая шапка главной заменена */
+#hdr{ display:none !important }
+
+/* ============================================================
+   Причина остаточного CLS на всех страницах (аудит §2.2): шапка строится JS
+   и, вставляясь в начало body, сдвигала весь контент вниз.
+   Решение: шапка вынесена из потока (fixed), а место под неё зарезервировано
+   в CSS — то есть ещё до запуска JS. Сдвига больше нет.
+   ============================================================ */
+:root{ --hb-h:34px; --hd-h:68px }
+body{ padding-top:calc(var(--hb-h) + var(--hd-h)) }
+.hb{ position:fixed; top:0; left:0; right:0; z-index:51 }
+.hd{ position:fixed; top:var(--hb-h); left:0; right:0 }
+.hd.stuck .hd-in{ height:56px }
+
+/* На главной шапка лежит поверх 3D-геро — резерв не нужен */
+body[data-page="index"]{ padding-top:0 }
+body[data-page="index"] .hb{ position:absolute }
+body[data-page="index"] .hd{ position:fixed; top:var(--hb-h) }
+
+@media(max-width:980px){ :root{ --hd-h:64px } }
+
+/* Подписи групп в мобильном меню — не заголовки (иерархия h1→h4, аудит §3.3) */
+.hd-panel .grp{ font:800 11.5px/1 var(--font); letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); margin:26px 0 10px }

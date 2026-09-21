@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ваши истории — Холмогорское подворье</title>
+<meta name="description" content="Записки гостей фермерского рынка на пробковой доске: за чем приезжают, что запомнилось, кого знают по имени.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E&#127806;%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="stories">
+<main class="page">
+  <section class="phero paper grain">
+    <div class="wrap">
+      <div class="crumbs"><a href="/index.html">Главная</a><span>&#8250;</span><span>Истории</span></div>
+      <h1>Ваши истории</h1>
+      <p class="lead" style="max-width:54ch">Доска у входа, только в интернете. <b id="storiesCount"></b> записок от гостей — приколите свою.</p>
+    </div>
+  </section>
+  <section class="sect"><div class="wrap">
+    <h2 class="vh">Записки гостей</h2><div class="cork"><div class="notes rv-stagger" id="notes"></div></div>
+  </div></section>
+  <section class="sect paper"><div class="wrap" style="max-width:var(--w-prose)">
+    <p class="eyebrow">Оставить записку</p>
+    <h2 class="sect-t" style="margin-bottom:18px">Расскажите про свой рынок</h2>
+    <form class="form" id="storyForm">
+      <div class="field"><label>Как вас зовут</label><input id="storyWho" placeholder="Имя или как подписать"></div>
+      <div class="field"><label>Ваша история</label><textarea id="storyText" rows="4" placeholder="За чем приезжаете, что запомнилось"></textarea></div>
+      <button class="btn btn-primary" type="submit">Приколоть записку</button>
+      <p class="note" id="storyNote">Записки проходят модерацию — публикуем всё, кроме рекламы и брани.</p>
+    </form>
+  </div></section>
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/pages3.js"></script>
+</body></html>

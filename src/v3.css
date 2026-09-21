@@ -1,0 +1,251 @@
+/* ============================================================
+   Слой v3 — подключается ПОСЛЕ style.css и pages.css, поэтому переопределяет их.
+   Задача: закрыть пять дефицитов из хп/ДИЗАЙН-СИСТЕМА-v3-И-MOTION.md §1
+   (контраст масштаба, воздух, фактура, ритм, отклик) на ВСЕХ страницах сразу.
+   ============================================================ */
+
+/* ---------- 1. База: кегль 17→16, вертикальный ритм ---------- */
+body{ font-size: var(--t-body); line-height: var(--lh-body) }
+h1,h2{ letter-spacing: var(--tr-h1); text-wrap: balance }
+h3{ font-size: var(--t-h3); text-wrap: balance }
+.lead{ font-size: var(--t-body-l); line-height: var(--lh-body-l) }
+.eyebrow{ font-size: var(--t-caption); letter-spacing: var(--tr-caption) }
+
+/* Крупная форма — рычаг №1 (было 2,8×, стало 10,6×) */
+.display-xl{ font-size: var(--t-display-xl); font-weight:900; text-transform:uppercase;
+  letter-spacing: var(--tr-display); line-height: var(--lh-display); margin:0 }
+.display-l{ font-size: var(--t-display-l); font-weight:900; text-transform:uppercase;
+  letter-spacing:-.03em; line-height:.92; margin:0 }
+.quote-xl{ font-size: var(--t-quote); font-weight:600; line-height:1.28; letter-spacing:-.015em;
+  text-indent:-.4em }               /* висячая пунктуация */
+
+/* Все цифры — табличные (цены перестают «прыгать») */
+.pc-price, .pi-price, .ci-price, .sum-row, .hstat b, .stats b, .num{ font-variant-numeric: tabular-nums }
+
+/* ---------- 2. Фактура: бумага и зерно (§4) ---------- */
+.grain{ position:relative }
+.grain::after{ content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)'/%3E%3C/svg%3E");
+  opacity:.055; mix-blend-mode:multiply }
+.paper{ background:var(--cream);
+  background-image:linear-gradient(rgba(200,123,59,.035),rgba(200,123,59,.035)) }
+
+/* ---------- 3. Глубина: тёплые тени вместо серых, снятие декоративных бордеров ---------- */
+:root{ --shadow: var(--sh-3) }          /* старый токен теперь тёплый */
+
+.pcard, .bcard, .rcard, .fcard, .ecard{
+  border:0; box-shadow: var(--sh-1);
+  transition: transform var(--t-base) var(--e-out), box-shadow var(--t-base) var(--e-out) }
+.pcard:hover, .bcard:hover, .rcard:hover, .fcard:hover, .ecard:hover{
+  transform: translateY(-6px); box-shadow: var(--sh-2), var(--sh-cat) }
+
+/* Категорийный свет — ровно три приёма: тинт за фото, цветная тень, цветная линия */
+.pcard .pc-img{ background: var(--cat-tint) !important; position:relative }
+.pcard .pc-img::after{ content:''; position:absolute; left:0; right:0; bottom:0; height:2px;
+  background: var(--cat); opacity:.5 }
+.pcard .pc-cat{ color: var(--cat) }
+
+/* Границы остаются только там, где функциональны: поля, фильтры, таблицы */
+.filters, .summary{ border:0; box-shadow: var(--sh-1) }
+.crow{ border:0; box-shadow: var(--sh-1) }
+
+/* ---------- 4. Ритм: утилиты раскладки (§5.2) ---------- */
+.bleed{ width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw) }
+.wrap-wide{ max-width: var(--w-wide); margin:0 auto; padding:0 var(--gutter) }
+.prose-w{ max-width: var(--w-prose); margin:0 auto }
+.split-57{ display:grid; grid-template-columns:5fr 7fr; gap:48px; align-items:center }
+.split-75{ display:grid; grid-template-columns:7fr 5fr; gap:48px; align-items:center }
+.overlap{ margin-left:-64px; position:relative; z-index:2 }
+@media(max-width:900px){
+  .split-57, .split-75{ grid-template-columns:1fr; gap:28px }
+  .overlap{ margin-left:0 }
+}
+
+/* ---------- 5. Отклик: reveal, штамп, счётчики (§8) ---------- */
+.rv{ opacity:0; transform:translateY(28px);
+  transition:opacity var(--t-base) var(--e-out), transform var(--t-base) var(--e-out) }
+.rv.in{ opacity:1; transform:none }
+.rv-stagger > *{ opacity:0; transform:translateY(22px);
+  transition:opacity var(--t-base) var(--e-out), transform var(--t-base) var(--e-out) }
+.rv-stagger.in > *{ opacity:1; transform:none }
+
+/* Штамп вместо тоста (Ф12) */
+.stamp{ position:fixed; z-index:120; width:104px; height:104px; margin:-52px 0 0 -52px;
+  pointer-events:none; color:var(--brown-d); opacity:0 }
+.stamp.go{ animation: stampIn 620ms var(--e-back) forwards }
+@keyframes stampIn{
+  0%{ opacity:0; transform:scale(.55) rotate(-14deg) }
+  35%{ opacity:1; transform:scale(1.04) rotate(-4deg) }
+  70%{ opacity:1; transform:scale(1) rotate(-3deg) }
+  100%{ opacity:0; transform:scale(1) rotate(-3deg) }
+}
+
+/* Пульс живого статуса (Ф3) */
+.pulse{ width:9px; height:9px; border-radius:50%; background:var(--c-veg); flex:0 0 9px;
+  box-shadow:0 0 0 0 color-mix(in oklab, var(--c-veg) 55%, transparent);
+  animation: pulse 2.2s var(--e-soft) infinite }
+.pulse.off{ background:var(--muted); animation:none }
+@keyframes pulse{
+  0%{ box-shadow:0 0 0 0 color-mix(in oklab, var(--c-veg) 55%, transparent) }
+  70%{ box-shadow:0 0 0 12px transparent }
+  100%{ box-shadow:0 0 0 0 transparent }
+}
+
+/* ---------- 6. Переходы между страницами (Ф29) — MPA, две строки ---------- */
+@view-transition{ navigation: auto }
+::view-transition-group(*){ animation-duration: 420ms; animation-timing-function: var(--e-inout) }
+::view-transition-old(root){ animation-duration: 260ms }
+
+/* ---------- 6.5 Правки, найденные на скриншотах пилота ---------- */
+
+/* Cookie-полоса перекрывала контент по центру экрана — уводим в угол и сужаем */
+#cookie{ left:20px !important; right:auto !important; bottom:20px !important;
+  max-width:380px; transform:none !important; box-shadow:var(--sh-3) }
+@media(max-width:560px){ #cookie{ left:12px !important; right:12px !important; max-width:none } }
+
+/* .btn-ghost был рассчитан на тёмный фон (белый текст) — на светлых страницах он «пропадал».
+   Даём вариант для светлого фона, тёмный оставляем внутри тёмных секций. */
+.btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--ink) }
+.btn-ghost:hover{ background:var(--ink); color:#fff }
+.phero.dark .btn-ghost, .mg-end .btn-ghost, [data-page="morning"] .btn-ghost,
+.foot .btn-ghost, .hero .btn-ghost{ color:var(--ink); border-color:var(--ink) }
+[data-page="morning"] .mg-end .btn-ghost{ color:var(--ink); border-color:var(--ink) }
+
+/* Атрибут hidden проигрывал любому классу с display (`.jr-lead{display:grid}`),
+   из-за чего скрытые блоки оставались видимыми. Нужен для всей логики
+   деградации данных и пустых состояний, поэтому !important здесь оправдан. */
+[hidden]{ display:none !important }
+
+/* ---------- 7. Фокус всегда видим (§9) ---------- */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:2px solid var(--ink); outline-offset:3px; border-radius:4px }
+
+/* ---------- 8. Уважение к настройкам пользователя ---------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important }
+  .rv, .rv-stagger > *{ opacity:1 !important; transform:none !important }
+  .pulse{ animation:none }
+}
+
+/* ---------- Ф1: подпись о живом свете в геро главной ---------- */
+.sky-note{ position:absolute; z-index:6; left:40px; bottom:104px; display:inline-flex; align-items:center; gap:8px;
+  padding:8px 14px; border-radius:var(--r-full); background:rgba(29,29,27,.42); color:#fff;
+  font:700 12.5px/1 var(--font); letter-spacing:.04em; text-transform:lowercase;
+  backdrop-filter:blur(8px); pointer-events:none }
+.sky-note::before{ content:''; width:7px; height:7px; border-radius:50%; background:var(--brown);
+  box-shadow:0 0 0 3px rgba(200,123,59,.28) }
+@media(max-width:760px){ .sky-note{ left:16px; bottom:auto; top:80px } }
+
+/* ---------- Ф16: итог корзины как кассовая лента ---------- */
+.summary{ position:relative; background:#fffdf8;
+  font-variant-numeric:tabular-nums;
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 12px), transparent 0),
+    radial-gradient(9px 12px at 12px 100%, transparent 98%, #000 100%);
+  mask-image:linear-gradient(#000 calc(100% - 12px), transparent 0),
+    radial-gradient(9px 12px at 12px 100%, transparent 98%, #000 100%);
+  -webkit-mask-size:100% 100%, 24px 12px; mask-size:100% 100%, 24px 12px;
+  -webkit-mask-repeat:no-repeat, repeat-x; mask-repeat:no-repeat, repeat-x;
+  -webkit-mask-position:0 0, 0 100%; mask-position:0 0, 0 100%;
+  padding-bottom:34px }
+.summary h3{ text-align:center; font-size:15px !important; letter-spacing:.14em;
+  text-transform:uppercase; padding-bottom:14px; border-bottom:1px dashed var(--line) }
+.summary h3::after{ content:'Холмогорское подворье'; display:block; font:400 11px/1.4 var(--font);
+  letter-spacing:.06em; text-transform:none; color:var(--muted); margin-top:6px }
+.summary .sum-row{ display:flex; justify-content:space-between; gap:10px; align-items:baseline }
+.summary .sum-row span:first-child::after{ content:' ·······································';
+  color:var(--line); letter-spacing:-.5px }
+
+/* ============================================================
+   P1 из аудита §2.2: резерв высоты под контейнеры, которые наполняет JS.
+   Селектор :empty срабатывает только пока контейнер пуст — после вставки
+   контента резерв исчезает сам, без JS и без «прыжка» вниз.
+   ============================================================ */
+:where(#pgrid,#edGrid,#evGrid,#recGrid,#blogGrid,#jrGrid,#zProducts,#related,
+       #farmerProds,#recipeProds,#boxGrid,#bdGrid,#fcKitchens,#zFarmers,#traders):empty{ min-height:640px }
+:where(#edFeature,#prodWrap,#eventWrap,#farmerPage,#recipeWrap,#artWrap):empty{ min-height:440px }
+:where(#valuesGrid,#guestsGrid,#seasonList,#diary,#notes,#smapOut,#faqOut,#srchOut,
+       #jnPlan,#planBox,#arrivals,#chalkList,#stGrid,#prAssets,#walkChs,#ppChecks,
+       #jnStats,#prFacts,#cartList,#cartSummary,#coSummary,#zSeason,#zRecipes,#zGuide,
+       #zManifesto,#plans,#bdPlans,#crateBox,#stRules,#fcMenu,#fcSeats,#edFilters,#zMeta):empty{ min-height:180px }
+
+/* Плитка товара: заранее известная пропорция картинки — тоже против сдвигов */
+.pcard .pc-img{ aspect-ratio:4/3; height:auto; min-height:150px }
+
+/* Шрифты подгружаются с swap, из-за чего геро «дёргался»: фиксируем высоту строки
+   заголовка первого экрана, чтобы подмена начертания не меняла раскладку. */
+.hero-inner h1{ min-height:calc(2 * 1.04em) }
+
+/* Добор по аудиту: фильтры каталога и катнав тоже наполняются JS */
+:where(#fCats,#fFarms):empty{ min-height:150px; display:block }
+:where(#catNav,#pcount):empty{ min-height:44px; display:block }
+/* Cookie-полоса появлялась в потоке и сдвигала контент — фиксируем позицию */
+#cookie{ position:fixed !important }
+
+/* Подписи колонок футера — тоже не заголовки */
+.foot .foot-ttl{ font:800 12.5px/1 var(--font); letter-spacing:.12em; text-transform:uppercase;
+  color:#fff; margin:0 0 14px }
+
+/* Утилита: заголовок для программ чтения, невидимый визуально.
+   Нужен там, где сетка карточек (h3) идёт сразу за h1 — иначе уровень пропущен. */
+.vh{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0 }
+
+/* ============================================================
+   P2 из аудита §3.3: цели касания на мобильном были меньше 44 px.
+   Поднимаем высоту всех настоящих контролов; ссылки внутри текста
+   не трогаем — для них правило WCAG делает исключение.
+   ============================================================ */
+@media (max-width: 900px), (pointer: coarse){
+  .pcard .pc-add, .bd-item .add, .ed-chip, .bd-cats button, .jr-rubrics button,
+  .cart-view button, .wheel-nav button, .crate .sizes button, .faq-q,
+  .btn, .hd-ico, .sh-ico, .qty button, .ci-del, .chip-item .x{
+    min-height:44px }
+  .btn{ padding-block:12px }
+  .pcard .pc-add, .bd-item .add{ min-width:44px; padding:12px 14px }
+  .qty button{ min-width:44px }
+  .crumbs{ gap:6px 12px; line-height:1 }
+  .crumbs a, .crumbs span{ display:inline-flex; align-items:center; min-height:44px }
+  .foot a, .hd-panel a, .quick a, .smap-row a, .plan-legend span{ min-height:44px;
+    display:flex; align-items:center }
+  .chips .chip, .box-items span{ min-height:40px; display:inline-flex; align-items:center }
+  .hd-drop a{ min-height:48px }
+}
+
+/* Метки в фильтрах каталога — оформление прежнее, семантика не заголовочная */
+.filters .fld-ttl{ font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+  font-weight:800; margin:0 0 12px }
+/* Заголовок карточки лояльности поднят до h2 — сохраняем прежний вид */
+.stamp-card .card-ttl{ font-size:18px; text-transform:uppercase; letter-spacing:.02em; margin:0 0 4px }
+
+/* Хотспоты 3D остаются визуально точками 20px, но зона нажатия расширяется до 44px
+   за счёт прозрачного padding с компенсирующим отрицательным margin. */
+.hs{ padding:12px !important; margin:-12px !important; background:none }
+.hs .hs-dot{ pointer-events:none }
+/* Крестик модалки был 36×36 */
+.m-close{ min-width:44px; min-height:44px }
+
+/* ============================================================
+   Совместимость с Safari (демо показывают в нём).
+   1. backdrop-filter в Safari требует префикс -webkit-.
+   2. color-mix() поддерживается с Safari 16.4 — на более старых версиях
+      переменные с ним становятся невалидными, и категорийный свет пропадает.
+      Даём статические значения через @supports-фолбэк.
+   Проверить в этом окружении Safari нельзя (Windows) — поэтому страхуемся.
+   ============================================================ */
+.hd, .hd.hero-mode.stuck, .hd-plate, .mg-clock, .sh, .sound-btn{
+  -webkit-backdrop-filter: blur(14px) saturate(1.2) }
+.hd.hero-mode{ -webkit-backdrop-filter:none }
+.mg-clock{ -webkit-backdrop-filter: blur(6px) }
+.hd.hero-mode .hd-plate{ -webkit-backdrop-filter: blur(4px) }
+
+@supports not (background: color-mix(in oklab, red 50%, white)){
+  :root{ --cat-tint:#f6efe4; --cat-tint-strong:#efe2cf; --cat-glow:rgba(200,123,59,.22) }
+  .cat-dairy{ --cat-tint:#f8f1e2; --cat-glow:rgba(202,163,93,.22) }
+  .cat-meat { --cat-tint:#f7e7e2; --cat-glow:rgba(147,27,22,.20) }
+  .cat-veg  { --cat-tint:#eaf0e0; --cat-glow:rgba(79,122,34,.20) }
+  .cat-sea  { --cat-tint:#e8eef3; --cat-glow:rgba(111,146,171,.22) }
+  .cat-bread{ --cat-tint:#f8ebdd; --cat-glow:rgba(200,123,59,.22) }
+  .pulse{ box-shadow:0 0 0 0 rgba(79,122,34,.55) }
+  .bd-item .add{ background:var(--brown-d) }
+}

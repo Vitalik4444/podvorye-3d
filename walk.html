@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прогулка по рынку в 3D — Холмогорское подворье</title>
+<meta name="description" content="Пройдитесь по фермерскому рынку в браузере: молочный ряд, балтийский улов, мясная лавка, овощи и фудкорт. Шесть глав или свободная прогулка.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌾%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="walk">
+<main class="page">
+  <section class="phero paper grain">
+    <div class="wrap">
+      <div class="crumbs"><a href="/index.html">Главная</a><span>›</span><span>Прогулка</span></div>
+      <h1>Прогулка по рынку</h1>
+      <p class="lead" style="max-width:58ch">Рынок оцифрован целиком — снаружи и внутри. Можно пройти шесть глав по порядку или просто пойти куда захочется: управление на клавишах и свайпом.</p>
+      <p class="lead" id="walkWarn" hidden style="max-width:58ch;color:var(--brown-d);margin-top:14px">
+        Прогулка загружает трёхмерную модель — около 8 МБ. На мобильном интернете лучше подключиться к Wi-Fi.</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap">
+      <h2 class="vh">Режимы прогулки</h2><div class="walk-modes rv-stagger">
+        <a class="walk-mode" href="/index.html?inside=1">
+          <b>Экскурсия</b>
+          <span>Заходим внутрь и идём по рядам — камера ведёт сама, можно вмешаться в любой момент.</span>
+        </a>
+        <a class="walk-mode cat-veg" href="/index.html?inside=1&amp;quest=1">
+          <b>Квест</b>
+          <span>Обойти пять прилавков и узнать, как здесь всё устроено. На финише — промокод на кофе.</span>
+        </a>
+        <a class="walk-mode" href="/index.html">
+          <b>Свободно</b>
+          <span>Осмотреть рынок снаружи, покрутить модель и заглянуть внутрь самому.</span>
+        </a>
+        <a class="walk-mode" href="/map.html">
+          <b>Плоский план</b>
+          <span>Если 3D тяжело: обычная схема зала с прилавками и арендаторами.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect paper">
+    <div class="wrap">
+      <p class="eyebrow">Шесть глав</p>
+      <h2 class="sect-t" style="margin-bottom:22px">Куда пойти</h2>
+      <div class="walk-chs rv-stagger" id="walkChs"></div>
+      <p style="color:var(--muted);font-size:13.5px;margin-top:16px">Управление внутри: WASD или стрелки — идти, перетаскивание — осмотреться, Esc — выйти наружу. С клавиатуры хотспоты обходятся через Tab.</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap">
+      <div class="split-57">
+        <div class="rv">
+          <p class="eyebrow">Текстом</p>
+          <h2 class="sect-t">Если 3D не открывается</h2>
+          <p class="lead" style="color:var(--muted);margin-top:12px">Та же прогулка словами и фотографиями: шесть глав, те же ряды и те же хозяйства. Работает на любом устройстве и читается голосовыми программами.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+            <a class="btn btn-primary" href="/morning.html">Утро на рынке</a>
+            <a class="btn btn-ghost" href="/farmers.html">Хозяйства текстом</a>
+          </div>
+        </div>
+        <div class="paper grain rv" style="border-radius:var(--r-l);padding:26px">
+          <p class="eyebrow">Как это сделано</p>
+          <p style="margin-top:10px;color:var(--muted)">Модель рынка получена из архитектурного проекта: SketchUp → glTF → сжатие. Внешняя часть — 4 МБ, интерьер — 8 МБ, загружается только когда вы решите зайти внутрь.</p>
+          <a class="btn btn-ghost" href="/about.html" style="margin-top:16px">О рынке</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/walk.js"></script>
+</body></html>

@@ -1,0 +1,169 @@
+/* ===== Волна 1 v3: боксы, конструктор, сезоны, журнал, прогулка ===== */
+
+/* ---------- Боксы (T3+T7, регистр РЫНОК) ---------- */
+.boxes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:20px }
+.box{ background:#fff; border-radius:var(--r-l); overflow:hidden; box-shadow:var(--sh-1);
+  display:flex; flex-direction:column; transition:transform var(--t-base) var(--e-out), box-shadow var(--t-base) var(--e-out) }
+.box:hover{ transform:translateY(-6px); box-shadow:var(--sh-2), var(--sh-cat) }
+.box-top{ background:var(--cat-tint); padding:22px 24px; position:relative }
+.box-top::after{ content:''; position:absolute; left:0; right:0; bottom:0; height:3px; background:var(--cat) }
+.box-size{ position:absolute; top:16px; right:18px; width:30px; height:30px; border-radius:50%;
+  background:var(--cat); color:#fff; display:grid; place-items:center; font:900 13px/1 var(--font) }
+.box h3{ font-size:23px; text-transform:uppercase; letter-spacing:-.01em; margin:0 0 6px }
+.box .serves{ font-size:13px; color:var(--muted) }
+.box-b{ padding:20px 24px 24px; display:flex; flex-direction:column; flex:1 }
+.box-b p{ color:var(--muted); font-size:15px; margin:0 0 16px }
+.box-items{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px }
+.box-items span{ font-size:12.5px; background:var(--cream-2); border-radius:var(--r-full); padding:5px 11px }
+.box-price{ margin-top:auto; display:flex; align-items:baseline; gap:10px; margin-bottom:14px }
+.box-price b{ font-size:26px; font-weight:900; font-variant-numeric:tabular-nums }
+.box-price s{ color:var(--muted); font-size:15px }
+.box .tag-season{ display:inline-block; font:700 10.5px/1 var(--font); letter-spacing:.06em;
+  text-transform:uppercase; color:#fff; background:var(--c-veg); border-radius:var(--r-full);
+  padding:5px 10px; margin-bottom:10px }
+
+/* Выбор частоты подписки */
+.plans{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px }
+.plan{ background:#fff; border-radius:var(--r-m); padding:18px 20px; box-shadow:var(--sh-1);
+  cursor:pointer; border:2px solid transparent; transition:.2s var(--e-soft) }
+.plan:hover{ box-shadow:var(--sh-2) }
+.plan.on{ border-color:var(--brown); box-shadow:var(--sh-2) }
+.plan b{ display:block; font-size:16px }
+.plan .disc{ color:var(--c-veg); font-weight:800; font-size:14px; margin-top:4px }
+.plan .note{ font-size:12.5px; color:var(--muted); margin-top:4px }
+
+/* ---------- Конструктор бокса (ключевая конверсия) ---------- */
+.builder{ display:grid; grid-template-columns:1fr 380px; gap:36px; align-items:start }
+.bd-cats{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px }
+.bd-cats button{ background:#fff; border:0; box-shadow:var(--sh-1); border-radius:var(--r-full);
+  padding:9px 16px; font:700 13.5px/1 var(--font); cursor:pointer; color:var(--ink); transition:.2s }
+.bd-cats button.on{ background:var(--ink); color:#fff }
+.bd-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:12px }
+.bd-item{ background:#fff; border-radius:var(--r-m); box-shadow:var(--sh-1); padding:14px;
+  display:flex; flex-direction:column; gap:6px; text-align:left }
+.bd-item .ic{ font-size:34px; line-height:1 }
+.bd-item b{ font-size:14px; line-height:1.25 }
+.bd-item .pr{ font-size:13.5px; color:var(--muted); font-variant-numeric:tabular-nums }
+/* Категорийный цвет притемняем: на светлых категориях (молочное, рыба)
+   белый текст на чистом --cat давал контраст ~2:1 — ниже нормы. */
+.bd-item .add{ margin-top:auto; border:0; border-radius:var(--r-s);
+  background:color-mix(in oklab, var(--cat) 74%, #1d1d1b); color:#fff;
+  padding:9px 10px; font:800 13px/1 var(--font); cursor:pointer; transition:.18s var(--e-soft) }
+.bd-item .add:hover:not(:disabled){ background:var(--ink) }
+.bd-item .add:disabled{ background:var(--line); color:var(--muted); cursor:not-allowed }
+
+/* Ящик */
+.crate{ position:sticky; top:88px; background:#fff; border-radius:var(--r-l); box-shadow:var(--sh-2); padding:24px 24px 22px }
+.crate h3{ font-size:19px; text-transform:uppercase; margin:0 0 4px }
+.crate .sizes{ display:flex; gap:8px; margin:16px 0 20px }
+.crate .sizes button{ flex:1; background:var(--cream-2); border:0; border-radius:var(--r-s);
+  padding:10px 6px; font:800 13px/1.3 var(--font); cursor:pointer; color:var(--ink) }
+.crate .sizes button.on{ background:var(--ink); color:#fff }
+.crate-box{ background:linear-gradient(#e8d6bb,#d8c19f); border-radius:12px; padding:14px;
+  min-height:150px; box-shadow:inset 0 2px 0 rgba(255,255,255,.5), inset 0 -14px 24px -14px rgba(94,60,28,.35);
+  display:flex; flex-wrap:wrap; gap:8px; align-content:flex-start }
+.crate-empty{ width:100%; text-align:center; color:#8a7355; font-size:13.5px; padding:26px 10px }
+.chip-item{ display:inline-flex; align-items:center; gap:7px; background:#fff; border-radius:var(--r-full);
+  padding:6px 10px 6px 8px; box-shadow:var(--sh-1); font-size:13px; animation:drop 320ms var(--e-back) }
+.chip-item .x{ background:none; border:0; cursor:pointer; color:var(--muted); font-size:15px; line-height:1; padding:0 2px }
+.chip-item .q{ font-weight:800; font-variant-numeric:tabular-nums }
+@keyframes drop{ from{ opacity:0; transform:translateY(-14px) scale(.9) } to{ opacity:1; transform:none } }
+.fill{ height:8px; background:var(--cream-2); border-radius:var(--r-full); margin:16px 0 8px; overflow:hidden }
+.fill i{ display:block; height:100%; background:var(--c-veg); transform-origin:0 50%;
+  transform:scaleX(0); transition:transform 320ms var(--e-out) }
+.fill.warn i{ background:var(--brown) }
+.fill.full i{ background:var(--c-meat) }
+.crate .meta{ display:flex; justify-content:space-between; font-size:13px; color:var(--muted) }
+.crate .total{ display:flex; align-items:baseline; justify-content:space-between; margin:18px 0 14px }
+.crate .total b{ font-size:28px; font-weight:900; font-variant-numeric:tabular-nums }
+.crate .hint{ font-size:12.5px; color:var(--muted); margin-top:10px }
+
+/* ---------- Колесо сезонов (Ф20) ---------- */
+/* Колесо липкое: список сезонных продуктов длиннее колеса, при центрировании
+   колесо уезжало из вида (найдено на скриншоте). */
+.wheel-wrap{ display:grid; grid-template-columns:minmax(280px,420px) 1fr; gap:48px; align-items:start }
+.wheel-col{ position:sticky; top:96px }
+.wheel{ position:relative; aspect-ratio:1; touch-action:none; user-select:none; cursor:grab }
+.wheel.drag{ cursor:grabbing }
+.wheel-ring{ position:absolute; inset:0; transition:transform 420ms var(--e-out) }
+.wheel.drag .wheel-ring{ transition:none }
+/* Подписи месяцев: позиция в left/top, контр-вращение через --counter,
+   чтобы текст оставался горизонтальным при повороте кольца. */
+.wheel-m{ position:absolute; transform:translate(-50%,-50%) rotate(var(--counter,0deg));
+  background:none; border:0; padding:6px 8px; cursor:pointer;
+  font:800 12px/1 var(--font); letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+  white-space:nowrap; transition:color .2s var(--e-soft) }
+.wheel-m:hover{ color:var(--ink) }
+.wheel-m.on{ color:var(--brown); font-size:14px }
+.wheel-ring::before{ content:''; position:absolute; inset:9%; border-radius:50%;
+  border:1px dashed var(--line) }
+.wheel-hub{ position:absolute; inset:22%; border-radius:50%; background:#fff; box-shadow:var(--sh-2);
+  display:grid; place-items:center; text-align:center; padding:18px }
+.wheel-hub b{ display:block; font-size:26px; font-weight:900; text-transform:uppercase; letter-spacing:-.02em }
+.wheel-hub span{ display:block; font-size:12.5px; color:var(--muted); margin-top:6px }
+.wheel-nav{ display:flex; gap:8px; justify-content:center; margin-top:18px }
+.wheel-nav button{ background:#fff; border:0; box-shadow:var(--sh-1); border-radius:var(--r-full);
+  width:44px; height:44px; cursor:pointer; font-size:17px; color:var(--ink) }
+.season-list{ display:grid; gap:12px }
+.season-row{ display:flex; align-items:center; gap:14px; background:#fff; border-radius:var(--r-m);
+  padding:14px 16px; box-shadow:var(--sh-1); color:inherit }
+.season-row:hover{ box-shadow:var(--sh-2), var(--sh-cat) }
+.season-row .ic{ font-size:28px; width:38px; text-align:center }
+.season-row b{ display:block; font-size:15.5px }
+.season-row span{ font-size:12.5px; color:var(--muted) }
+.season-row .peak{ margin-left:auto; font:800 11px/1 var(--font); letter-spacing:.06em;
+  text-transform:uppercase; color:#fff; background:var(--cat); border-radius:var(--r-full); padding:6px 10px }
+
+/* ---------- Журнал как издание ---------- */
+.jr-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  border-bottom:2px solid var(--ink); padding-bottom:18px; margin-bottom:34px }
+.jr-issue{ font:800 12px/1 var(--font); letter-spacing:.18em; text-transform:uppercase; color:var(--muted) }
+.jr-rubrics{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px }
+.jr-rubrics button{ background:transparent; border:1.5px solid var(--line); border-radius:var(--r-full);
+  padding:8px 15px; font:700 13px/1 var(--font); cursor:pointer; color:var(--ink); transition:.2s }
+.jr-rubrics button.on{ background:var(--ink); color:#fff; border-color:var(--ink) }
+.jr-lead{ display:grid; grid-template-columns:7fr 5fr; gap:36px; align-items:center; margin-bottom:44px }
+.jr-cover{ aspect-ratio:4/5; border-radius:var(--r-l); background:var(--cat-tint);
+  display:grid; place-items:center; font-size:96px; box-shadow:var(--sh-2); position:relative; overflow:hidden }
+.jr-cover::after{ content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 55%, rgba(29,29,27,.14)) }
+.jr-lead .jr-cover{ aspect-ratio:16/10; font-size:120px }
+.jr-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:26px }
+.jr-card{ color:inherit; display:flex; flex-direction:column; gap:12px }
+.jr-card .jr-cover{ transition:transform var(--t-base) var(--e-out) }
+.jr-card:hover .jr-cover{ transform:translateY(-6px) }
+.jr-meta{ display:flex; gap:10px; font:800 11px/1 var(--font); letter-spacing:.1em;
+  text-transform:uppercase; color:var(--cat) }
+.jr-meta span{ color:var(--muted) }
+.jr-card h3{ font-size:21px; line-height:1.2; text-transform:none; margin:0 }
+.jr-card p{ color:var(--muted); font-size:14.5px; margin:0 }
+
+/* ---------- Прогулка: главы ---------- */
+.walk-modes{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:12px }
+.walk-mode{ background:#fff; border-radius:var(--r-l); padding:24px; box-shadow:var(--sh-1); color:inherit;
+  display:flex; flex-direction:column; gap:8px; transition:.25s var(--e-out) }
+.walk-mode:hover{ transform:translateY(-5px); box-shadow:var(--sh-2) }
+.walk-mode b{ font-size:19px; text-transform:uppercase }
+.walk-mode span{ color:var(--muted); font-size:14.5px }
+.walk-chs{ display:grid; gap:2px; counter-reset:ch }
+.walk-ch{ display:grid; grid-template-columns:64px 1fr auto; gap:22px; align-items:center;
+  padding:22px 24px; background:#fff; color:inherit; box-shadow:var(--sh-1); transition:.22s var(--e-soft) }
+.walk-ch:first-child{ border-radius:var(--r-l) var(--r-l) 0 0 }
+.walk-ch:last-child{ border-radius:0 0 var(--r-l) var(--r-l) }
+.walk-ch:hover{ background:var(--cat-tint) }
+.walk-ch .n{ font:900 30px/1 var(--font); color:var(--cat); font-variant-numeric:tabular-nums }
+.walk-ch b{ display:block; font-size:18px; text-transform:uppercase; letter-spacing:-.01em }
+.walk-ch p{ margin:4px 0 0; color:var(--muted); font-size:14.5px }
+.walk-ch .go{ font:800 13px/1 var(--font); color:var(--cat); white-space:nowrap }
+
+@media(max-width:960px){
+  .builder{ grid-template-columns:1fr }
+  .crate{ position:static }
+  .wheel-wrap{ grid-template-columns:1fr; gap:28px }
+  .jr-lead{ grid-template-columns:1fr }
+}
+@media(max-width:640px){
+  .walk-ch{ grid-template-columns:44px 1fr; gap:14px; padding:18px }
+  .walk-ch .go{ display:none }
+  .bd-grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)) }
+}

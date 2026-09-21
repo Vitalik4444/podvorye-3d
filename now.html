@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сейчас на подворье — что привезли, кто торгует, цены дня</title>
+<meta name="description" content="Живая страница фермерского рынка «Холмогорское подворье»: открыт или закрыт, кто сегодня стоит за прилавком, что привезли утром, цены дня и как доехать.">
+<link rel="preload" as="fetch" href="./api/today.json" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌾%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="now">
+<main class="page">
+
+  <!-- 1. Статус-строка: единственная задача — ответить «ехать или нет» за 15 секунд.
+          Разметка статична, JS только подставляет значения, поэтому LCP не зависит от сети. -->
+  <section class="now-hero paper grain">
+    <div class="wrap">
+      <div class="crumbs"><a href="/index.html">Главная</a><span>›</span><span>Сейчас</span></div>
+      <div class="now-top">
+        <span class="now-state"><span class="pulse" id="nowPulse"></span>
+          <b id="nowState">Открыто</b>
+          <span class="hours" id="nowHours">10:00 — 20:00, ежедневно</span></span>
+        <span class="now-meta">
+          <span id="nowCountdown"></span>
+          <span id="nowWeather"></span>
+          <span id="nowCrowd"></span>
+        </span>
+      </div>
+      <h1>Сегодня<br>на подворье</h1>
+      <p class="lead" id="nowNote" style="max-width:46ch">Фермерский рынок в 20 км от Калининграда по дороге к морю.</p>
+      <div class="now-cta">
+        <a class="btn btn-primary" id="routeBtn" href="#" rel="noopener">Проложить маршрут</a>
+        <a class="btn btn-ghost" href="/catalog.html">Заказать с доставкой</a>
+        <button class="btn btn-ghost" id="posterBtn">Афиша дня — картинкой</button>
+      </div>
+      <p class="now-updated" id="nowUpdated"></p>
+    </div>
+  </section>
+
+  <!-- 2. Привезли утром — только в полном режиме (данные свежее 6 часов) -->
+  <section class="sect" id="secArrivals" class="pending">
+    <div class="wrap">
+      <p class="eyebrow">Привезли утром</p>
+      <h2 class="sect-t" style="margin-bottom:22px">Свежее сегодняшнее</h2>
+      <div class="arrivals rv-stagger" id="arrivals"></div>
+    </div>
+  </section>
+
+  <!-- 3. Кто сегодня стоит -->
+  <section class="sect paper" id="secTraders" class="pending">
+    <div class="wrap">
+      <p class="eyebrow">За прилавками</p>
+      <h2 class="sect-t">Кто сегодня стоит <span style="color:var(--muted);font-weight:600" id="tradersCount"></span></h2>
+      <div class="traders rv-stagger" id="traders" style="margin-top:22px"></div>
+    </div>
+  </section>
+
+  <!-- 4. Меловая доска цен дня (Ф21) -->
+  <section class="sect" id="secPrices" class="pending">
+    <div class="wrap">
+      <div class="chalk">
+        <h3>Цены дня</h3>
+        <div class="chalk-list" id="chalkList"></div>
+        <p class="chalk-note">Цены на сегодня. Светлым выделено то, что отличается от каталога.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Ближайшее событие — повод остаться -->
+  <section class="sect paper" id="secEvent">
+    <div class="wrap">
+      <div class="split-57 rv">
+        <div>
+          <p class="eyebrow" id="evDate"></p>
+          <h2 class="sect-t" id="evTitle"></h2>
+          <p class="lead" id="evDesc" style="margin-top:12px"></p>
+          <p style="color:var(--muted);margin-top:10px" id="evTime"></p>
+          <a class="btn btn-ghost" id="evLink" href="/events.html" style="margin-top:18px">Программа события</a>
+        </div>
+        <!-- Практическая врезка вместо повтора названия события -->
+        <div class="chalk">
+          <h3>Как доехать</h3>
+          <div class="chalk-list">
+            <div class="chalk-row"><span class="nm">От Калининграда</span><span class="ln"></span><span class="pr">20 км · ~25 мин</span></div>
+            <div class="chalk-row"><span class="nm">По дороге к морю</span><span class="ln"></span><span class="pr">не съезжая с трассы</span></div>
+            <div class="chalk-row"><span class="nm">Парковка</span><span class="ln"></span><span class="pr">бесплатно</span></div>
+            <div class="chalk-row"><span class="nm">Лучшее время</span><span class="ln"></span><span class="pr">до 10:00</span></div>
+          </div>
+          <p class="chalk-note">Расстояние и время в пути — уточняются, данные предварительные.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Телеметрия честности (Ф26) -->
+  <section class="sect" id="secTelemetry" class="pending">
+    <div class="wrap">
+      <p class="eyebrow">Без округлений</p>
+      <h2 class="sect-t" style="margin-bottom:30px">Что случилось на рынке сегодня</h2>
+      <div class="telem rv">
+        <div><b data-count="0" id="tMilk">0</b><span>литров молока продано</span></div>
+        <div><b data-count="0" id="tBread">0</b><span>буханок вышло из печи</span></div>
+        <div><b data-count="0" id="tFarms">0</b><span>хозяйств привезли утром</span></div>
+        <div><b data-count="0" id="tWaste">0</b><span>килограммов выброшено</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Быстрые ссылки -->
+  <section class="sect paper grain">
+    <div class="wrap">
+      <div class="quick rv-stagger">
+        <a href="/map.html"><b>План рынка</b><span>Найти нужный прилавок заранее</span></a>
+        <a href="/index.html"><b>Пройтись в 3D</b><span>Заглянуть внутрь, не выходя из дома</span></a>
+        <a href="/recipes.html"><b>Что приготовить</b><span>Рецепт → все продукты в корзину</span></a>
+        <a href="/contacts.html" id="routeBtn2"><b>Как доехать</b><span>Маршрут, парковка, время в пути</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/now.js"></script>
+<script type="module" src="/src/poster.js"></script>
+</body></html>

@@ -1,0 +1,96 @@
+/* ===== «Утро на рынке» — регистр ЖУРНАЛ, сцена 2 из дизайн-системы.
+   Скролл = ход часов: меняются кадр, температура света и время в углу.
+   Спецификация: хп/ДИЗАЙН-СИСТЕМА-v3-И-MOTION.md §8.3 ===== */
+
+body[data-page="morning"]{ background:#12151a; color:#f4efe6 }
+body[data-page="morning"] .sh{ background:rgba(18,21,26,.72); border-bottom-color:rgba(255,255,255,.09) }
+body[data-page="morning"] .sh-nav a{ color:#f4efe6 }
+body[data-page="morning"] .sh .logo .cls-2{ fill:#fff }
+body[data-page="morning"] .sh-ico{ background:transparent; border-color:rgba(255,255,255,.18); color:#f4efe6 }
+
+/* Слой кадров: перекрёстное затухание, ничего кроме opacity не анимируем */
+.mg-bg{ position:fixed; inset:0; z-index:0; background:#12151a }
+.mg-frame{ position:absolute; inset:0; opacity:0; transition:opacity 700ms var(--e-soft) }
+.mg-frame img{ width:100%; height:100%; object-fit:cover; display:block }
+.mg-frame.on{ opacity:1 }
+
+/* Температурный слой — то, что делает «ход часов» физически ощутимым */
+.mg-tint{ position:fixed; inset:0; z-index:1; pointer-events:none; mix-blend-mode:soft-light }
+.mg-veil{ position:fixed; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(to bottom, rgba(10,12,16,.55) 0%, rgba(10,12,16,.15) 35%, rgba(10,12,16,.75) 100%) }
+
+/* Часы */
+.mg-clock{ position:fixed; z-index:6; top:96px; right:34px; text-align:right; padding:12px 16px;
+  border-radius:var(--r-m); background:rgba(12,14,18,.34); backdrop-filter:blur(6px);
+  font-variant-numeric:tabular-nums; text-shadow:0 2px 14px rgba(0,0,0,.6) }
+.mg-clock b{ display:block; font-size:44px; font-weight:900; line-height:1; letter-spacing:-.03em }
+.mg-clock span{ display:block; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(244,239,230,.9); margin-top:6px; text-shadow:0 2px 10px rgba(0,0,0,.7) }
+
+/* Прогресс чтения */
+.mg-progress{ position:fixed; top:0; left:0; right:0; height:2px; z-index:7;
+  background:var(--brown); transform:scaleX(0); transform-origin:0 50% }
+
+/* Главы */
+.mg-scene{ position:relative; z-index:3 }
+.mg-ch{ min-height:100vh; display:flex; align-items:center; padding:120px 0 }
+.mg-ch .wrap{ max-width:var(--w-base) }
+/* Локальный скрим под текстом: на пёстрых кадрах общей вуали не хватало,
+   текст терял контраст (найдено на скриншотах пилота). */
+.mg-in{ max-width:600px; position:relative; padding:34px 38px; margin-left:-38px }
+/* Скрим выведен ЗА границы текстового блока, иначе рамка градиента читалась
+   как «панель» поверх фотографии. */
+.mg-in::before{ content:''; position:absolute; inset:-60px -160px -60px -120px; z-index:-1;
+  background:radial-gradient(70% 60% at 28% 50%, rgba(12,14,18,.8) 0%, rgba(12,14,18,.5) 45%, rgba(12,14,18,0) 78%) }
+.mg-ch:nth-child(even) .mg-in{ margin-left:auto; margin-right:-38px }   /* асимметрия: чередуем сторону */
+.mg-ch:nth-child(even) .mg-in::before{ inset:-60px -120px -60px -160px;
+  background:radial-gradient(70% 60% at 72% 50%, rgba(12,14,18,.8) 0%, rgba(12,14,18,.5) 45%, rgba(12,14,18,0) 78%) }
+.mg-time{ font-size:13px; font-weight:800; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--brown); margin-bottom:14px }
+.mg-ch h2{ font-size:clamp(38px,6.4vw,86px); font-weight:900; text-transform:uppercase;
+  letter-spacing:-.035em; line-height:.9; margin:0 0 20px; text-wrap:balance;
+  text-shadow:0 4px 30px rgba(0,0,0,.45) }
+.mg-ch p{ font-size:19px; line-height:1.7; color:rgba(244,239,230,.9); max-width:52ch;
+  text-shadow:0 2px 16px rgba(0,0,0,.5) }
+.mg-ch p + p{ margin-top:1em }
+.mg-note{ margin-top:26px; padding-left:18px; border-left:2px solid var(--brown);
+  font-size:15.5px; color:rgba(244,239,230,.74) }
+
+/* Первый экран */
+.mg-open{ min-height:100vh; display:grid; place-items:center; text-align:center; position:relative; z-index:3 }
+.mg-open .kicker{ font-size:12px; font-weight:800; letter-spacing:.24em; text-transform:uppercase;
+  color:rgba(244,239,230,.92); text-shadow:0 2px 12px rgba(0,0,0,.75) }
+.mg-open h1{ font-size:clamp(60px,13vw,190px); font-weight:900; text-transform:uppercase;
+  letter-spacing:-.045em; line-height:.84; margin:18px 0 0; text-shadow:0 6px 44px rgba(0,0,0,.5) }
+.mg-open .sub{ margin-top:26px; font-size:19px; color:rgba(244,239,230,.86) }
+.mg-scroll{ position:absolute; bottom:38px; left:50%; transform:translateX(-50%);
+  font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:rgba(244,239,230,.6) }
+.mg-scroll::after{ content:''; display:block; width:1px; height:34px; margin:10px auto 0;
+  background:linear-gradient(rgba(244,239,230,.6), transparent) }
+
+/* Финал — возврат в светлый регистр РЫНОК */
+.mg-end{ position:relative; z-index:4; background:var(--paper); color:var(--ink); padding:96px 0 }
+.mg-end h2{ font-size:var(--t-h2); text-transform:uppercase; margin-bottom:14px }
+.mg-end .lead{ color:var(--muted); max-width:52ch }
+.mg-end .row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:26px }
+
+@media(max-width:760px){
+  /* Скрим уходил за границы окна на 136px (аудит §3.3) — сбрасываем выносы */
+  .mg-in{ margin:0; padding:22px 18px }
+  .mg-in::before{ inset:-18px -18px }
+  .mg-ch:nth-child(even) .mg-in{ margin:0 }
+  .mg-ch:nth-child(even) .mg-in::before{ inset:-18px -18px }
+  .mg-clock{ top:auto; bottom:22px; right:18px }
+  .mg-clock b{ font-size:30px }
+  .mg-ch{ padding:90px 0; min-height:92vh }
+  .mg-ch p{ font-size:17px }
+  .mg-ch:nth-child(even) .mg-in{ margin-left:0 }
+}
+
+/* Статичный режим для prefers-reduced-motion: обычный лонгрид, кадры в потоке */
+body.mg-static .mg-bg, body.mg-static .mg-tint{ display:none }
+body.mg-static .mg-veil{ display:none }
+body.mg-static .mg-ch{ min-height:auto; padding:56px 0; display:block }
+body.mg-static .mg-ch .mg-shot{ display:block; margin:0 0 28px; border-radius:var(--r-l); overflow:hidden }
+.mg-shot{ display:none }
+.mg-shot img{ width:100%; height:auto; display:block }

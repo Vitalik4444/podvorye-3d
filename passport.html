@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Паспорт партии продукта — Холмогорское подворье</title>
+<meta name="description" content="Паспорт партии продукта: кто сделал, когда, сколько километров до прилавка и какие проверки прошёл. Код с упаковки — вся история продукта.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌾%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="passport">
+<main class="page">
+
+  <div id="ppFound">
+    <section class="pp-head">
+      <div class="wrap">
+        <p class="pp-code" id="ppCode"></p>
+        <h1 id="ppTitle"></h1>
+        <p class="when" id="ppWhen"></p>
+      </div>
+    </section>
+
+    <section class="sect">
+      <div class="wrap">
+        <h2 class="vh">О партии</h2>
+        <div class="pp-grid rv-stagger">
+          <div class="pp-card"><h3>Кто сделал</h3><div id="ppWho"></div></div>
+          <div class="pp-card"><h3>Путь до прилавка</h3><div id="ppPath"></div></div>
+        </div>
+
+        <div class="pp-card rv" style="margin-top:22px">
+          <h3>Что известно об этой партии</h3>
+          <p id="ppNote" style="font-size:var(--t-body-l);line-height:1.7;max-width:62ch"></p>
+          <ul class="pp-checks" id="ppChecks" style="margin:18px 0 0;padding:0"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect paper" id="ppBuy"><div class="wrap"></div></section>
+
+    <section class="sect">
+      <div class="wrap">
+        <p class="eyebrow">Другие партии</p>
+        <div class="chips" id="ppOther2" style="margin-top:12px"></div>
+        <p style="color:var(--muted);font-size:13px;margin-top:14px">В рабочей версии код печатается на упаковке в виде QR — этот список нужен только для показа.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Состояние: код не найден -->
+  <section class="sect" id="ppMiss" hidden>
+    <div class="wrap">
+      <div class="pp-miss">
+        <h1 style="font-size:var(--t-h1);text-transform:uppercase">Партия не найдена</h1>
+        <p class="lead" style="color:var(--muted);margin:14px auto 0;max-width:46ch">
+          Код <b id="ppMissCode"></b> не значится в нашей базе. Возможно, он стёрся или введён с ошибкой —
+          проверьте символы на упаковке.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px">
+          <a class="btn btn-primary" href="/catalog.html">Перейти в каталог</a>
+          <a class="btn btn-ghost" href="/contacts.html">Написать нам</a>
+        </div>
+        <p class="eyebrow" style="margin-top:30px">Примеры партий</p>
+        <div class="chips" id="ppOther" style="justify-content:center;margin-top:10px"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/passport.js"></script>
+</body></html>

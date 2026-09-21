@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Собери свой бокс — Холмогорское подворье</title>
+<meta name="description" content="Конструктор фермерского бокса: выберите размер ящика, положите продукты и смотрите, сколько осталось места. Цена считается сразу.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🌾%3C/text%3E%3C/svg%3E">
+</head>
+<body data-page="builder">
+<main class="page">
+  <section class="phero paper grain">
+    <div class="wrap">
+      <div class="crumbs"><a href="/index.html">Главная</a><span>›</span><a href="/boxes.html">Боксы</a><span>›</span><span>Свой бокс</span></div>
+      <h1>Соберите свой ящик</h1>
+      <p class="lead" style="max-width:56ch">Кладите в ящик что хотите — шкала подскажет, сколько осталось места, а цена пересчитается на каждом действии.</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap">
+      <div class="builder">
+
+        <div>
+          <div class="bd-cats" id="bdCats"></div>
+          <h2 class="vh">Продукты для ящика</h2><div class="bd-grid" id="bdGrid"></div>
+        </div>
+
+        <aside class="crate">
+          <h3>Ваш ящик</h3>
+          <p style="color:var(--muted);font-size:13.5px" id="bdCount">0 позиций</p>
+
+          <div class="sizes" id="crateSizes"></div>
+
+          <div class="crate-box" id="crateBox"></div>
+
+          <div class="fill" id="fill"><i id="fillBar"></i></div>
+          <div class="meta"><span id="fillMeta"></span><span id="fillLeft"></span></div>
+
+          <div style="margin-top:18px">
+            <p class="eyebrow" style="margin-bottom:8px">Частота</p>
+            <div class="plans" id="bdPlans" style="grid-template-columns:1fr 1fr"></div>
+          </div>
+
+          <div class="total">
+            <span style="color:var(--muted);font-size:13.5px" id="bdPlanNote"></span>
+            <b id="bdTotal">0 ₽</b>
+          </div>
+          <button class="btn btn-primary" id="bdSubmit" style="width:100%" disabled>Оформить ящик</button>
+          <p class="hint" id="bdHint"></p>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+</main>
+<script type="module" src="/src/site.js"></script>
+<script type="module" src="/src/builder.js"></script>
+</body></html>
