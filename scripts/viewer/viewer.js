@@ -65,10 +65,15 @@
      иначе из file:// ничего не скачается. */
   var draco = new window.DRACOLoader();
   draco.setDecoderConfig({ type: 'wasm' });
-  draco._loadLibrary = function (url, responseType) {
-    if (responseType === 'arraybuffer') return Promise.resolve(decodeBase64(window.__DRACO_WASM));
-    return Promise.resolve(atob(window.__DRACO_JS));
-  };
+  if (window.__DRACO_WASM) {
+    // страница открыта с диска: из file:// декодер не скачать, отдаём вшитый
+    draco._loadLibrary = function (url, responseType) {
+      if (responseType === 'arraybuffer') return Promise.resolve(decodeBase64(window.__DRACO_WASM));
+      return Promise.resolve(atob(window.__DRACO_JS));
+    };
+  } else {
+    draco.setDecoderPath('draco/');
+  }
 
   var loader = new window.GLTFLoader();
   loader.setDRACOLoader(draco);
@@ -107,10 +112,7 @@
     note.querySelector('p').textContent = 'Загружается интерьер торгового зала.';
     bar.style.width = '45%';
     setTimeout(function () {
-      var buf = decodeBase64(window.__MODEL_INT);
-      window.__MODEL_INT = null;
-      bar.style.width = '80%';
-      loader.parse(buf, '', function (gltf) {
+      var ready = function (gltf) {
         model = gltf.scene;
         prep(model);
         model.traverse(function (o) {
@@ -127,9 +129,20 @@
         note.style.display = 'none';
         interiorPending = false;
         after();
-      }, function (err) {
+      };
+      var oops = function (err) {
         note.innerHTML = '<b>Не удалось открыть интерьер</b><br>' + err;
-      });
+      };
+      if (window.__MODEL_INT) {
+        var buf = decodeBase64(window.__MODEL_INT);
+        window.__MODEL_INT = null;
+        bar.style.width = '80%';
+        loader.parse(buf, '', ready, oops);
+      } else {
+        loader.load(window.__INT_URL, ready,
+          function (p) { if (p.total) bar.style.width = (45 + 50 * p.loaded / p.total) + '%'; },
+          oops);
+      }
     }, 60);
   }
 
@@ -449,14 +462,19 @@
   /* ---- старт ---- */
   bar.style.width = '35%';
   setTimeout(function () {
-    var buf = decodeBase64(window.__MODEL_EXT);
-    window.__MODEL_EXT = null;      // освобождаем память под base64-строку
-    bar.style.width = '70%';
-    loader.parse(buf, '', function (gltf) {
-      bar.style.width = '100%';
-      extReady(gltf);
-    }, function (err) {
+    var fail = function (err) {
       note.innerHTML = '<b>Не удалось открыть модель</b><br>' + err;
-    });
+    };
+    var done = function (gltf) { bar.style.width = '100%'; extReady(gltf); };
+    if (window.__MODEL_EXT) {            // модель вшита в страницу
+      var buf = decodeBase64(window.__MODEL_EXT);
+      window.__MODEL_EXT = null;         // освобождаем память под base64-строку
+      bar.style.width = '70%';
+      loader.parse(buf, '', done, fail);
+    } else {                             // модель лежит отдельным файлом
+      loader.load(window.__EXT_URL, done,
+        function (p) { if (p.total) bar.style.width = (25 + 70 * p.loaded / p.total) + '%'; },
+        fail);
+    }
   }, 60);
 })();

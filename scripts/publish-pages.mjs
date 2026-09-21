@@ -23,7 +23,8 @@ function copyTree(src, dst) {
 }
 
 const REPO = 'https://github.com/Vitalik4444/podvorye-3d.git';
-const SITE_URL = process.env.SITE_URL || 'https://vitalik4444.github.io/podvorye-3d';
+const VIEWER_URL = process.env.VIEWER_URL || 'https://vitalik4444.github.io/podvorye-3d';
+const SITE_URL = VIEWER_URL + '/site';   // полный сайт лежит в подпапке
 const OUT = join('build', 'pages');
 
 // файлы, которые незачем публиковать: они для локального показа
@@ -43,12 +44,23 @@ console.log('1/4  сборка');
 process.env.SITE_URL = SITE_URL;      // его читает scripts/seo.mjs
 run('npm run build');
 
-console.log('2/4  подготовка папки');
+console.log('2/4  сборка просмотрщика и раскладка');
+run('node scripts/viewer/build-hosted.mjs ' +
+    'models-backup/facades_2026-09-21_tex1024.glb public/models/interior.glb ' +
+    'build/viewer build/zones.json');
+
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
+
+// просмотрщик модели — в корень адреса, его и показывают заказчику
+for (const name of readdirSync('build/viewer')) {
+  copyTree(join('build', 'viewer', name), join(OUT, name));
+}
+// полный сайт — в подпапку
+mkdirSync(join(OUT, 'site'), { recursive: true });
 for (const name of readdirSync('dist')) {
   if (SKIP.has(name)) { console.log('    пропущено:', name); continue; }
-  copyTree(join('dist', name), join(OUT, name));
+  copyTree(join('dist', name), join(OUT, 'site', name));
 }
 writeFileSync(join(OUT, '.nojekyll'), '');   // иначе Pages прогонит файлы через Jekyll
 
@@ -62,5 +74,6 @@ console.log('4/4  публикация');
 run(`git remote add origin ${REPO}`, OUT);
 run('git push -q --force origin gh-pages', OUT);
 
-console.log('\nГотово:', SITE_URL + '/');
+console.log('\nПросмотрщик модели: ' + VIEWER_URL + '/');
+console.log('Полный сайт:        ' + VIEWER_URL + '/site/');
 console.log('Обновление на Pages занимает до минуты.');
