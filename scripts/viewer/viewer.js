@@ -1,4 +1,4 @@
-/* Просмотрщик 3D-модели рынка «Холмогорское подворье», редакция 27.
+/* Просмотрщик 3D-модели рынка «Холмогорское подворье», редакция 29.
    Самодостаточный: модель, библиотеки и декодер Draco вшиты в этот же файл,
    поэтому страница открывается двойным кликом и работает без интернета. */
 (function () {
@@ -379,7 +379,7 @@
     var col = DATA.color[z.kind] || '#c87b3b';
     document.getElementById('chero').style.background =
       'linear-gradient(150deg,' + col + ',' + shade(col, -24) + ')';
-    document.getElementById('cnum').textContent = z.num || 'ВГ';
+    document.getElementById('cnum').textContent = z.num || z.badge || '—';
     document.getElementById('cname').textContent = z.label;
     var mm = function (v) { return (v / 1000).toFixed(v % 1000 ? 2 : 1).replace('.', ','); };
     document.getElementById('cdim').textContent = z.dims
@@ -387,7 +387,7 @@
       : 'Вход в здание';
     document.getElementById('cnote').textContent = z.note;
     document.getElementById('cchips').innerHTML =
-      '<span>Лист ' + z.sheet + '</span><span>Альбом компоновки 21.09.2026</span>';
+      '<span>' + z.sheet + '</span><span>Компоновка рынка</span>';
     card.classList.add('open');
   }
 

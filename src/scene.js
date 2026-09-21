@@ -791,7 +791,7 @@ function openZonePanel(isl){
   const color=ZONE_COLOR[isl.kind]||'#c87b3b';
   const mm=v=>(v/1000).toFixed(v%1000?2:1).replace('.',',');
   document.getElementById('pHero').style.background=`linear-gradient(150deg,${color},${shade(color,-22)})`;
-  document.getElementById('pMono').textContent=isl.num||'ВГ';
+  document.getElementById('pMono').textContent=isl.num||isl.badge||'—';
   document.getElementById('pSpec').textContent='Зона рынка';
   document.getElementById('pName').textContent=isl.label;
   document.getElementById('pTag').textContent = isl.dims
@@ -799,7 +799,7 @@ function openZonePanel(isl){
     : 'Вход в здание';
   document.getElementById('pStory').textContent=isl.note;
   document.getElementById('pMeta').innerHTML=
-    `<span class="chip">Лист ${isl.sheet}</span><span class="chip">Альбом компоновки 21.09.2026</span>`;
+    `<span class="chip">${isl.sheet}</span><span class="chip">Компоновка рынка</span>`;
   document.getElementById('pProducts').innerHTML='';
   const cat=document.getElementById('pCatalog'); if(cat) cat.hidden=true;   // у зоны нет каталога
   panel.classList.add('open'); overlay.classList.add('show'); panel.setAttribute('aria-hidden','false');

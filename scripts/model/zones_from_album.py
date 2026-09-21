@@ -86,6 +86,7 @@ COLOR = {
     'dairy': '#caa35d', 'food': '#931b16', 'bakery': '#c87b3b',
     'produce': '#4f7a22', 'kids': '#4f7a22', 'cafe': '#931b16',
     'shop': '#caa35d', 'sweets': '#c87b3b', 'entry': '#1d1d1b',
+    'meatpav': '#931b16', 'fishpav': '#a4bdd1',
 }
 
 rows = []
@@ -102,16 +103,37 @@ for num, label, kind, w0, d0, area0, X0, Y0, sheet, note in ZONES:
     maxz, minz = -Y, -Y - dm
     node = 'Island_%d' % num
     g = raw.get(str(num))
-    top = g['top'] if g else 1.2
+    top = min(g['top'], 3.0) if g else 1.2   # выше метку не поднимаем: не читается
     if g:  # сверка контура альбома с геометрией
         for got, exp, ax in ((g['min'][0], minx, 'minX'), (g['max'][0], maxx, 'maxX'),
                              (g['min'][1], minz, 'minZ'), (g['max'][1], maxz, 'maxZ')):
             if abs(got - exp) > 0.05:
                 mismatch.append('%s %s: альбом %.3f, модель %.3f' % (node, ax, exp, got))
     rows.append(dict(num=num, id=node, label=label, kind=kind, area=area, top=top,
-                     w=w, d=d, sheet=sheet, note=note,
+                     w=w, d=d, sheet='Лист ' + sheet, note=note, badge=None,
                      c=[round((minx + maxx) / 2, 3), round(top, 3), round((minz + maxz) / 2, 3)],
                      minp=[round(minx, 3), round(minz, 3)], maxp=[round(maxx, 3), round(maxz, 3)]))
+
+PAVILIONS = [
+    ('MEAT', 'Мясной павильон', 'meatpav', 'М',
+     'Заполненные витрины колбасного ряда, два окна у дальней стены, рубочная с рабочими '
+     'столами и три подвешенные полутуши. Над павильоном LED-пояс.'),
+    ('FISH', 'Рыбный павильон', 'fishpav', 'Р',
+     'Рыба и морепродукты на льду. Над павильоном LED-пояс.'),
+]
+for key, label, kind, badge, note in PAVILIONS:
+    g = raw.get(key)
+    if not g:
+        print('павильона', key, 'нет в модели — пропущен'); continue
+    minx, minz = g['min']; maxx, maxz = g['max']
+    rows.append(dict(num=None, id='Island_' + key, label=label, kind=kind,
+                     area=round((maxx - minx) * (maxz - minz), 1),
+                     top=min(g['top'], 3.0),
+                     w=round((maxx - minx) * 1000), d=round((maxz - minz) * 1000),
+                     sheet='Выдача R29', note=note, badge=badge,
+                     c=[round((minx + maxx) / 2, 3), round(min(g['top'], 3.0), 3),
+                        round((minz + maxz) / 2, 3)],
+                     minp=[minx, minz], maxp=[maxx, maxz]))
 
 # №23 расходится законно: в альбоме дан номинальный контур зоны, а в модели
 # у кофейни сняты стенки и остекление — осталось только оборудование.
@@ -146,7 +168,11 @@ L = [
     'export const ISLANDS = [',
 ]
 for r in rows:
-    L.append("  { num:%d, id:'%s', label:'%s', kind:'%s', sheet:'%s'," % (r['num'], r['id'], r['label'], r['kind'], r['sheet']))
+    # у мясного и рыбного павильонов номера в альбоме нет
+    L.append("  { num:%s, id:'%s', label:'%s', kind:'%s', sheet:'%s'," % (
+        r['num'] if r['num'] else 'null', r['id'], r['label'], r['kind'], r['sheet']))
+    if r.get('badge'):
+        L.append("    badge:'%s'," % r['badge'])
     L.append("    area:%s, dims:[%d,%d]," % (r['area'], r['w'], r['d']))
     L.append("    note:'%s'," % r['note'].replace("'", "\\'"))
     L.append("    c:[%s], top:%s, min:[%s], max:[%s] }," % (
@@ -162,7 +188,7 @@ L.append('};')
 L.append('')
 L.append('// Входная группа — лист ВГ-01. Отдельной зоной в экспликации не значится.')
 e = raw['entrance']
-L.append("export const ENTRANCE = { label:'Входная группа', kind:'entry', sheet:'ВГ-01',")
+L.append("export const ENTRANCE = { label:'Входная группа', kind:'entry', sheet:'Лист ВГ-01',")
 L.append("  note:'Слева от входа два банкомата 900 × 620 × 1 650 и автомат с растворимым кофе 800 × 620 × 1 850. Справа постамат с терминалом 3 000 × 600 × 2 100 у дальней стены, лицом ко входу, свободный проход перед ним 2 500 мм. Дальше слева аптека, справа пивной магазин.',")
 L.append("  c:[%s,%s,%s], top:%s, min:[%s,%s], max:[%s,%s] };" % (
     round((e['min'][0]+e['max'][0])/2, 3), e['top'], round((e['min'][1]+e['max'][1])/2, 3),
@@ -181,7 +207,7 @@ print('записано зон:', len(rows), '->', out_path)
 json_path = sys.argv[3] if len(sys.argv) > 3 else None
 if json_path:
     entrance = dict(num=None, id='Остров_entrance', label='Входная группа', kind='entry',
-                    sheet='ВГ-01', area=None, dims=None,
+                    sheet='Лист ВГ-01', area=None, dims=None, badge='ВГ',
                     note='Слева от входа два банкомата 900 × 620 × 1 650 и автомат с растворимым '
                          'кофе 800 × 620 × 1 850. Справа постамат с терминалом 3 000 × 600 × 2 100 '
                          'у дальней стены, лицом ко входу, свободный проход перед ним 2 500 мм. '

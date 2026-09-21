@@ -12,7 +12,7 @@ gltf-transform instance свернёт их в GPU-инстансы почти �
 
   python heap_produce.py <вход.gltf> <выход.gltf> <выход.bin> 20,21
 """
-import json, sys, collections, random
+import json, re, sys, collections, random
 import numpy as np
 
 rnd = random.Random(2509)   # фиксированное зерно: пересборка даёт тот же результат
@@ -69,19 +69,57 @@ def add_accessor(arr, comp_type, typ, minmax=False):
 
 
 def zone_of(name):
-    """New/20/20_Stepped_display_2000mm/red -> '20'"""
+    """Номер зоны из имени узла. Схемы менялись от редакции к редакции:
+       ред. 26-27  New/20/20_Stepped_display_2000mm/red
+       ред. 29     R29_20_Stepped_display_2000mm
+    """
     parts = name.split('/')
-    return parts[1] if len(parts) > 2 and parts[0] == 'New' else None
+    if len(parts) > 2 and parts[0] == 'New':
+        return parts[1]
+    m = re.match(r'(?:R\d+_)?(\d+)_', name)
+    return m.group(1) if m else None
 
 
+def looks_like_produce(prim):
+    """Плоды — низкополигональные шары по 80 треугольников, диаметр ~15 см.
+       Ищем по геометрии, а не по имени материала: в выдаче ред. 29 имена
+       материалов потеряны (стали FX_96 и подобные)."""
+    a = acc[prim['indices']]
+    tris = a['count'] // 3
+    if tris < 800 or tris % 80:
+        return False
+    pa = acc[prim['attributes']['POSITION']]
+    if 'min' not in pa:
+        return False
+    span = max(pa['max'][k] - pa['min'][k] for k in range(3))
+    return span > 0.5          # один шар столько не занимает — значит, их много
+
+
+sys.setrecursionlimit(100000)
 targets = []
-for i, n in enumerate(nodes):
-    nm = n.get('name', '')
-    if 'mesh' not in n or zone_of(nm) not in TARGET_ZONES:
-        continue
-    for p in meshes[n['mesh']]['primitives']:
-        if mname.get(p.get('material')) in PRODUCE:
-            targets.append((i, p, mname[p['material']], zone_of(nm)))
+seen = set()
+
+
+def collect(i, zone):
+    """Обходим поддерево зоны целиком: в выдаче ред. 29 продукты лежат
+       в безымянных дочерних узлах, по имени самого узла их не найти."""
+    if i in seen:
+        return
+    seen.add(i)
+    n = nodes[i]
+    zone = zone_of(n.get('name', '')) or zone
+    if zone in TARGET_ZONES and 'mesh' in n:
+        for p in meshes[n['mesh']]['primitives']:
+            if 'indices' not in p:
+                continue
+            if mname.get(p.get('material')) in PRODUCE or looks_like_produce(p):
+                targets.append((i, p, 'm%s' % p.get('material'), zone))
+    for c in n.get('children', []):
+        collect(c, zone)
+
+
+for root in js['scenes'][js.get('scene', 0)]['nodes']:
+    collect(root, None)
 print('найдено мешей с продуктами:', len(targets))
 
 
