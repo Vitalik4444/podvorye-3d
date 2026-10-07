@@ -64,3 +64,26 @@ skp2gltf.exe facades.skp out facades      # аргументы: вход, пап
 Дальше — та же цепочка: `dedup → prune → instance → weld → resize → webp → draco`.
 Фасадам инстансинг ничего не дал (нет повторяющихся мешей), зато текстуры
 решают: 2048 → 12,0 МБ, 1024 → 9,2 МБ при неразличимой на глаз разнице.
+
+---
+
+# Обновление по готовому GLB (редакции 30–31)
+
+Проектировщик присылает один полный GLB в метрах, Y вверх. Конвертация не нужна:
+
+```
+python fix_mirrored_signs.py  Market_Full_R31.glb  in_fix.glb
+gltf-transform resize in_fix.glb a1.glb --width 2048 --height 2048
+gltf-transform webp   a1.glb     a2.glb --quality 82
+gltf-transform draco  a2.glb     interior.glb
+python zone_heights.py a2.glb build/rNN_zone_heights.json
+python zones_from_album.py build/rNN_zone_heights.json src/islands.js build/zones.json
+```
+
+* **`fix_mirrored_signs.py`** — в R31 боковые световые табло павильонов
+  читались зеркально: грань повёрнута внутрь верно, а U-координата идёт
+  справа налево. Скрипт разворачивает только такие грани, на исправной
+  модели ничего не меняет.
+* **Контур павильонов зашит в `zones_from_album.py`** (помещение по выдаче R29).
+  В R31 внутренние стенки павильонов сняты, и габарит узлов сжался до
+  оборудования, хотя само помещение то же.
