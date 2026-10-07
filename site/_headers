@@ -1,0 +1,20 @@
+# Заголовки кэширования (Netlify/Cloudflare Pages читают этот файл)
+# Хэшированные ассеты — на год, разметка и данные — всегда свежие.
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/img/*
+  Cache-Control: public, max-age=2592000
+
+/models/*
+  Cache-Control: public, max-age=2592000
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/api/*
+  Cache-Control: no-store
+
+/sw.js
+  Cache-Control: no-cache
