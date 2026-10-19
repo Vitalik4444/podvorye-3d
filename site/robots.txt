@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /checkout.html
+Disallow: /order-success.html
+Disallow: /cart.html
+
+Sitemap: https://vitalik4444.github.io/podvorye-3d/site/sitemap.xml

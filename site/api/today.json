@@ -1,0 +1,64 @@
+{
+ "_comment": "Контур B из хп/КОНТЕНТ-МОДЕЛЬ-И-CMS.md. В продакшене эту запись пишет Telegram-бот (/den), сайт читает её на клиенте с TTL 60 c. Правила деградации по updated_at — в now.js.",
+ "date": "2026-07-28",
+ "updated_at": "2026-07-28T22:21:20+02:00",
+ "status": "открыт",
+ "hours": "10:00 — 20:00",
+ "crowd": "немноголюдно",
+ "note": "С 15:00 играет живая музыка у входа.",
+ "traders_today": [
+  "molochnoe",
+  "ulov",
+  "zelen"
+ ],
+ "arrivals": [
+  {
+   "product": "moloko",
+   "time": "06:20"
+  },
+  {
+   "product": "hleb",
+   "time": "07:10"
+  },
+  {
+   "product": "klubnika",
+   "time": "07:40"
+  },
+  {
+   "product": "sudak",
+   "time": "08:05"
+  },
+  {
+   "product": "tvorog",
+   "time": "08:30"
+  }
+ ],
+ "prices_today": [
+  {
+   "product": "klubnika",
+   "price": 390
+  },
+  {
+   "product": "moloko",
+   "price": 110
+  },
+  {
+   "product": "hleb",
+   "price": 180
+  },
+  {
+   "product": "sudak",
+   "price": 650
+  },
+  {
+   "product": "med",
+   "price": 650
+  }
+ ],
+ "telemetry": {
+  "milk": 214,
+  "bread": 38,
+  "farms": 6,
+  "waste": 0
+ }
+}
