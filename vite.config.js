@@ -1,8 +1,17 @@
 import { defineConfig } from 'vite';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+
+// хеш модели в адресе: без него браузер держит прежнюю редакцию из кэша
+const ver = p => createHash('md5').update(readFileSync(p)).digest('hex').slice(0, 8);
 
 export default defineConfig({
   appType: 'mpa',
   base: './',
+  define: {
+    __MARKET_VER__: JSON.stringify(ver('public/models/market.glb')),
+    __INTERIOR_VER__: JSON.stringify(ver('public/models/interior.glb')),
+  },
   build: {
     chunkSizeWarningLimit: 1200,
     rollupOptions: {

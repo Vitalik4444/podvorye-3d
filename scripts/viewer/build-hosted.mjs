@@ -10,6 +10,7 @@
 */
 import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync, copyFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -31,11 +32,15 @@ mkdirSync(join(out, 'models'), { recursive: true });
 const shell = readFileSync(join(HERE, 'shell.html'), 'utf8');
 const zones = readFileSync(zonesPath, 'utf8');
 
+// Адрес модели постоянный, а Pages отдаёт её с max-age=600 — браузер показывал
+// прежнюю редакцию. Хеш содержимого в адресе меняется вместе с моделью.
+const ver = p => createHash('md5').update(readFileSync(p)).digest('hex').slice(0, 8);
+
 const head =
   '<script>\n' +
   'window.__ZONES=' + zones + ';\n' +
-  "window.__EXT_URL='models/facades.glb';\n" +
-  "window.__INT_URL='models/interior.glb';\n" +
+  "window.__EXT_URL='models/facades.glb?v=" + ver(extGlb) + "';\n" +
+  "window.__INT_URL='models/interior.glb?v=" + ver(intGlb) + "';\n" +
   '</' + 'script>';
 
 const html = shell

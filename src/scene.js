@@ -147,7 +147,7 @@ const lpct = document.getElementById('lpct');
    в кадре; на экономии трафика вообще не грузим до явного действия. */
 function startModelLoad(){
   if(startModelLoad.done) return; startModelLoad.done = true;
-  loader.load(ASSETS + 'models/market.glb', (gltf)=>{
+  loader.load(ASSETS + 'models/market.glb?v=' + __MARKET_VER__, (gltf)=>{
   model = gltf.scene;
   model.rotation.x = -Math.PI/2;      // SketchUp Z-up -> Y-up
   model.updateMatrixWorld(true);
@@ -560,7 +560,7 @@ function loadInterior(){
   interiorLoading=true;
   const il=document.getElementById('intLoader'); if(il) il.classList.add('on');
   return new Promise(res=>{
-    loader.load(ASSETS + 'models/interior.glb',(gltf)=>{
+    loader.load(ASSETS + 'models/interior.glb?v=' + __INTERIOR_VER__,(gltf)=>{
       interior=gltf.scene;
       interior.traverse(o=>{ if(o.isMesh){ if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();
         o.material.side=THREE.DoubleSide; o.material.envMapIntensity=1.05;
