@@ -152,3 +152,18 @@ python zones_from_album.py build/rNN_zone_heights.json src/islands.js build/zone
   нормалью наружу, и изнутри читались зеркально. `fix_mirrored_signs.py` разворачивает
   их по списку `BACK` (зритель за гранью). Вывески ресторана тоже смотрят нормалью
   «не туда», но читаются из зала правильно — общий фильтр их не трогает.
+
+## Мясной павильон ME03 (26.10.2026) — отдельный модуль поверх R46
+
+Пришёл не полный GLB, а модуль `Meat_Pavilion_ME03.glb` в координатах R46: группы
+`Island_MEAT` (оболочка помещения + новое оборудование ME03_*) и `LED_MEAT`, плюс
+`R46_Existing_Building_Context` — копия стен здания для ориентира, в рынок не переносится.
+
+```
+node swap_groups.mjs Market_Full_R46.glb Meat_Pavilion_ME03.glb merged.glb Island_MEAT,LED_MEAT
+```
+
+`swap_groups.mjs` удаляет одноимённые группы из полной модели, вливает модуль
+(`mergeDocuments`), ставит его группы на место старых, сохраняет `asset.extras` полной
+модели, затем `prune` + `unpartition` (GLB допускает один буфер). Дальше обычная цепочка
+с `fix_mirrored_signs.py`. Контур павильона не меняется (12,10 × 17,90 м).
