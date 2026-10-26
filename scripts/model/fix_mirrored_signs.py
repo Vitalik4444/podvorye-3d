@@ -17,6 +17,10 @@ import numpy as np
 
 src, dst = sys.argv[1], sys.argv[2]
 NAME = re.compile(r'display_(title|content)', re.I)
+# R46: картины в кафе левой стены стоят на стене со стороны входа, нормаль смотрит
+# из помещения наружу, а зритель внутри видит обратную сторону (материал
+# двусторонний). Для них «вправо» считается для зрителя за гранью.
+BACK = re.compile(r'(Mountain_Art|Baltic_Wave_Art)', re.I)
 
 d = bytearray(open(src, 'rb').read())
 jlen = struct.unpack('<I', d[12:16])[0]
@@ -46,7 +50,8 @@ def view(ai):
 UP = np.array([0.0, 1.0, 0.0])
 fixed = 0
 for node in js['nodes']:
-    if 'mesh' not in node or not NAME.search(node.get('name', '')):
+    back = bool(BACK.search(node.get('name', '')))
+    if 'mesh' not in node or not (NAME.search(node.get('name', '')) or back):
         continue
     if any(k in node for k in ('rotation', 'scale', 'matrix')):
         print('пропущен (есть поворот/масштаб у узла):', node['name']); continue
@@ -67,6 +72,8 @@ for node in js['nodes']:
             if abs(nrm[1]) > 0.7:          # горизонтальные грани не трогаем
                 continue
             right = np.cross(-nrm, UP)       # «вправо» для зрителя перед гранью
+            if back:
+                right = -right
             # градиент U по грани: решаем du = g·dp в плоскости треугольника
             e1, e2 = b - a, c - a
             du1, du2 = UV[ib][0] - UV[ia][0], UV[ic][0] - UV[ia][0]
