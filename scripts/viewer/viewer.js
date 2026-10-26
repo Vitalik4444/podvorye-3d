@@ -34,6 +34,7 @@
   controls.maxPolarAngle = Math.PI * 0.495;
 
   var ext = null, extBox = null, extSize = null, extMid = null;   // фасады
+  var siteSize = 0;                                               // фасады вместе с участком
   var model = null, box = null, size = null, mid = null;          // интерьер
   var interiorPending = false;
   var mode = 'orbit';
@@ -91,10 +92,16 @@
     ext = gltf.scene;
     prep(ext);
     scene.add(ext);
-    extBox = new T.Box3().setFromObject(ext);
+    // кадр строим по зданию; участок вокруг (SE01: парковка, деревья) в габарит не входит
+    extBox = new T.Box3();
+    ext.children.forEach(function (c) {
+      if (!/^(Site_Environment|SE01)/.test(c.name)) extBox.expandByObject(c);
+    });
+    if (extBox.isEmpty()) extBox.setFromObject(ext);
     extSize = extBox.getSize(new T.Vector3());
     extMid = extBox.getCenter(new T.Vector3());
-    camera.far = extSize.length() * 2.6;
+    siteSize = new T.Box3().setFromObject(ext).getSize(new T.Vector3()).length();
+    camera.far = Math.max(extSize.length() * 2.6, siteSize * 1.5);
 
     setOrbit();
     note.style.display = 'none';
@@ -161,7 +168,7 @@
     camera.position.copy(target).addScaledVector(dir, dist);
     controls.target.copy(target);
     controls.minDistance = radius * 0.12;
-    controls.maxDistance = dist * 2.2;
+    controls.maxDistance = Math.max(dist * 2.2, siteSize * 0.75);
     controls.update();
     hint.textContent = 'Зажмите и вращайте · колесо — приблизить';
     pad.style.display = 'none';

@@ -205,3 +205,27 @@ node swap_groups.mjs m2.glb Cafe_Island_CF02.glb merged.glb Island_14
 Цепочка обычная: `fix_mirrored_signs.py` (те же 6 исправлений, что в R46) → gltf-transform.
 Новые надписи проверены `diag_signs`-способом — все лицом в зал. Габариты зон
 совпали с CF02-сборкой полностью, `src/islands.js` не изменился.
+
+## Участок SE01 (27.10.2026) — окружение для вида снаружи
+
+`Market_Site_SE01.glb` — только окружение в координатах R47 (здание не трогается):
+рельеф, покрытие и разметка парковок по PDF разметки (15 129 м²), дороги, пруды,
+3 соседних корпуса, бордюры, тротуар вдоль фасада, 32 машины, 52 дерева, 22 фонаря,
+скамейки и навигационная стела у входа. Корень `Site_Environment_SE01`.
+
+Идёт не в интерьер, а в модель экстерьера, вместе с фасадами:
+
+```
+gltf-transform dedup/instance/prune  SE01.glb → s3.glb
+gltf-transform resize s3.glb s4.glb --width 1024 --height 1024
+gltf-transform webp   s4.glb s5.glb --quality 82
+gltf-transform merge  facades_2026-09-21_tex1024.glb s5.glb m.glb --merge-scenes
+gltf-transform draco  m.glb models-backup/facades_se01_2026-10-27.glb
+```
+
+Итог 10,0 МБ (фасады были 9,7 МБ). Этот файл берут `publish-pages.mjs` и
+`build_single.py` (первым аргументом вместо `public/models/market.glb`).
+`viewer.js` строит кадр «Осмотр снаружи» по зданию без узлов `Site_Environment`/`SE01`,
+а дальность отдаления и `camera.far` считает по всему участку.
+Соседний корпус SE01 вдоль левого фасада (X −32,7…−20,5, 3 м) скрыт внутри здания
+HOLMMARKET из модели фасадов — наложения не видно.

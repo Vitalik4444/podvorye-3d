@@ -46,7 +46,7 @@ run('npm run build');
 
 console.log('2/4  сборка просмотрщика и раскладка');
 run('node scripts/viewer/build-hosted.mjs ' +
-    'models-backup/facades_2026-09-21_tex1024.glb public/models/interior.glb ' +
+    'models-backup/facades_se01_2026-10-27.glb public/models/interior.glb ' +
     'build/viewer build/zones.json');
 
 rmSync(OUT, { recursive: true, force: true });
