@@ -167,3 +167,16 @@ node swap_groups.mjs Market_Full_R46.glb Meat_Pavilion_ME03.glb merged.glb Islan
 (`mergeDocuments`), ставит его группы на место старых, сохраняет `asset.extras` полной
 модели, затем `prune` + `unpartition` (GLB допускает один буфер). Дальше обычная цепочка
 с `fix_mirrored_signs.py`. Контур павильона не меняется (12,10 × 17,90 м).
+
+## «Дом ореха» NT02 (27.10.2026) — модуль поверх R46 + ME03
+
+Модуль `Nut_House_NT02.glb`, корень `Island_24` (стекло и каркас NT01 + `NT02_New_Fitout`).
+По `asset.extras.integration` меняется только `Island_24`, остальное, включая ME03, не трогать.
+
+```
+node swap_groups.mjs Market_Full_R46.glb Meat_Pavilion_ME03.glb m1.glb Island_MEAT,LED_MEAT
+node swap_groups.mjs m1.glb Nut_House_NT02.glb merged.glb Island_24
+```
+
+Модули накладываются по очереди на исходную R46. Надписи NT02 проверены
+`diag_signs`-способом (мировые координаты, сторона зрителя) — разворачивать не нужно.
