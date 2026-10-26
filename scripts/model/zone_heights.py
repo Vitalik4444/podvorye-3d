@@ -54,12 +54,14 @@ def walk(i, pm, lab):
     m = pm @ mat(n)
     # Island_12 (ред. 26-27), R29_Island_MEAT (ред. 29),
     # Island_20__red__000 (ред. 30 — узлы слиты по материалам),
-    # Island_16_17 и Dairy_Vending_Line (ред. 40 — вставленные блоки)
+    # Island_16_17 и Dairy_Vending_Line (ред. 40), Hot_Food_Island (ред. 45)
     g = re.match(r'(?:R\d+_)?Island_(.+)$', nm)
     if g:
         lab = g.group(1).split('__')[0]
     elif nm == 'Dairy_Vending_Line':
         lab = 'DV'
+    elif nm == 'Hot_Food_Island':
+        lab = 'HF'
     if 'mesh' in n and lab:
         for p in meshes[n['mesh']]['primitives']:
             a = acc[p['attributes']['POSITION']]
