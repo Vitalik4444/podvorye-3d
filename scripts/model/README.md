@@ -250,3 +250,19 @@ merge a6.glb SE01(e5.glb) --merge-scenes → draco → models-backup/facades_skp
 Главная страница сайта (`src/scene.js`) грузит свою копию `public/models/market.glb` —
 тот же исходник в дюймах, Z вверх (сцена сама поворачивает −90°). Для неё та же цепочка
 от `raw.glb` без `reorient.py`: 3,7 МБ. Прежний файл — `models-backup/market_home_before_2026-10-27.glb`.
+
+### Соседние здания из прежних фасадов
+
+В новом SKP нет соседних зданий (HOLMMARKET, длинный корпус слева, крытые ряды между ним
+и рынком). Они вырезаны из `facades_2026-09-21_tex1024.glb` по мировой X:
+
+```
+node cut_by_x.mjs facades_2026-09-21_tex1024.glb nb.glb -1.6   # треугольники с центром X < −1,6 м
+gltf-transform weld nb.glb nb2.glb
+gltf-transform merge facades_skp_2026-10-27_se01.glb nb2.glb m.glb --merge-scenes
+gltf-transform draco m.glb models-backup/facades_skp_2026-10-27_se01_nb.glb   # 10,1 МБ
+```
+
+Новый фасад заканчивается на X −1,3, поэтому порог −1,6 не цепляет старый фасад рынка.
+`cut_by_x.mjs` запускать из папки с `@gltf-transform/*` и `draco3dgltf`.
+Отдельно сохранено: `models-backup/neighbours_from_facades_2026-09-21.glb` (5,9 МБ).
