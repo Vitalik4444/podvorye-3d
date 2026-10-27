@@ -229,3 +229,24 @@ gltf-transform draco  m.glb models-backup/facades_se01_2026-10-27.glb
 а дальность отдаления и `camera.far` считает по всему участку.
 Соседний корпус SE01 вдоль левого фасада (X −32,7…−20,5, 3 м) скрыт внутри здания
 HOLMMARKET из модели фасадов — наложения не видно.
+
+## Новый фасад из SketchUp (27.10.2026)
+
+`FARM_Market_Model.skp` (32,8 МБ) — обновлённый фасад: красные стены с белым декором.
+Начало координат то же, что у прежних фасадов и интерьера; соседнего здания HOLMMARKET
+в файле нет (слева теперь виден условный корпус из SE01).
+
+skp2gltf не хранится в проекте — скачивается `gh release download v1.1.0 -R zhuzhaoyun/skp2gltf`.
+Внимание: второй аргумент склеивается с именем без разделителя — `skp2gltf.exe C:\skp\work\f.skp C:\skp\work facades`
+пишет `C:\skp\workfacades.gltf` и `C:\skp\workTextureNN.png`; префикс `work` снять.
+
+```
+gltf-transform copy facades.gltf raw.glb
+python reorient.py raw.glb r.glb                  # для просмотрщика: метры, Y вверх
+dedup → prune → instance → weld → resize 1024 → webp 82        → a6.glb
+merge a6.glb SE01(e5.glb) --merge-scenes → draco → models-backup/facades_skp_2026-10-27_se01.glb (4,2 МБ)
+```
+
+Главная страница сайта (`src/scene.js`) грузит свою копию `public/models/market.glb` —
+тот же исходник в дюймах, Z вверх (сцена сама поворачивает −90°). Для неё та же цепочка
+от `raw.glb` без `reorient.py`: 3,7 МБ. Прежний файл — `models-backup/market_home_before_2026-10-27.glb`.
